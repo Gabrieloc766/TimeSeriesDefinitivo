@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo: 8 6. Tasa Lag1 vs Rezagos | Analisis Tasa de Intervencion</title>
+  <meta name="description" content="Capítulo: 8 6. Tasa Lag1 vs Rezagos | Analisis Tasa de Intervencion" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo: 8 6. Tasa Lag1 vs Rezagos | Analisis Tasa de Intervencion" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo: 8 6. Tasa Lag1 vs Rezagos | Analisis Tasa de Intervencion" />
+  
+  
+  
+
+<meta name="author" content="Gabriel Orozco/Diana Aguirre/Edgard Camacho" />
+
+
+<meta name="date" content="2024-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="promedio-movil-vs-rezagos-lag-1-2-3.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analisis Tasa de Intervencion</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="enunciado.html"><a href="enunciado.html"><i class="fa fa-check"></i><b>1</b> <strong>Enunciado:</strong></a></li>
+<li class="chapter" data-level="2" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html"><i class="fa fa-check"></i><b>2</b> <strong>Análisis exploratorio:</strong></a></li>
+<li class="chapter" data-level="3" data-path="gráficos-de-visualización.html"><a href="gráficos-de-visualización.html"><i class="fa fa-check"></i><b>3</b> <strong>Gráficos de visualización:</strong></a></li>
+<li class="chapter" data-level="4" data-path="análisis-de-serie-de-tiempo.html"><a href="análisis-de-serie-de-tiempo.html"><i class="fa fa-check"></i><b>4</b> <strong>Análisis de serie de tiempo:</strong></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="análisis-de-serie-de-tiempo.html"><a href="análisis-de-serie-de-tiempo.html#promedio-o-media-móvil"><i class="fa fa-check"></i><b>4.1</b> Promedio o media móvil</a></li>
+<li class="chapter" data-level="4.2" data-path="análisis-de-serie-de-tiempo.html"><a href="análisis-de-serie-de-tiempo.html#rezago-operador-backshift-y-estacionalidad"><i class="fa fa-check"></i><b>4.2</b> Rezago (operador backshift) y estacionalidad</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fecha-vs-rezagos-lag-1-2-3.html"><a href="fecha-vs-rezagos-lag-1-2-3.html"><i class="fa fa-check"></i><b>5</b> <strong>Fecha vs Rezagos (lag 1, 2, 3):</strong></a></li>
+<li class="chapter" data-level="6" data-path="tasa-vs-rezagos-lag-1-2-3.html"><a href="tasa-vs-rezagos-lag-1-2-3.html"><i class="fa fa-check"></i><b>6</b> <strong>Tasa vs Rezagos (lag 1, 2, 3):</strong></a></li>
+<li class="chapter" data-level="7" data-path="promedio-movil-vs-rezagos-lag-1-2-3.html"><a href="promedio-movil-vs-rezagos-lag-1-2-3.html"><i class="fa fa-check"></i><b>7</b> <strong>Promedio Movil vs Rezagos (lag 1, 2, 3):</strong></a></li>
+<li class="chapter" data-level="8" data-path="tasa-lag1-vs-rezagos.html"><a href="tasa-lag1-vs-rezagos.html"><i class="fa fa-check"></i><b>8</b> <strong>6. Tasa Lag1 vs Rezagos</strong></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="tasa-lag1-vs-rezagos.html"><a href="tasa-lag1-vs-rezagos.html#descomposición"><i class="fa fa-check"></i><b>8.1</b> Descomposición</a></li>
+<li class="chapter" data-level="8.2" data-path="tasa-lag1-vs-rezagos.html"><a href="tasa-lag1-vs-rezagos.html#estacionariedad"><i class="fa fa-check"></i><b>8.2</b> Estacionariedad</a></li>
+<li class="chapter" data-level="8.3" data-path="tasa-lag1-vs-rezagos.html"><a href="tasa-lag1-vs-rezagos.html#diferenciación"><i class="fa fa-check"></i><b>8.3</b> Diferenciación</a></li>
+<li class="chapter" data-level="8.4" data-path="tasa-lag1-vs-rezagos.html"><a href="tasa-lag1-vs-rezagos.html#autocorrelación-acf-y-parcial-pacf"><i class="fa fa-check"></i><b>8.4</b> Autocorrelación (ACF) y Parcial (PACF)</a></li>
+<li class="chapter" data-level="8.5" data-path="tasa-lag1-vs-rezagos.html"><a href="tasa-lag1-vs-rezagos.html#volver-a-verificar-la-estacionariedad-tras-la-diferenciación"><i class="fa fa-check"></i><b>8.5</b> Volver a verificar la Estacionariedad tras la Diferenciación</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analisis Tasa de Intervencion</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tasa-lag1-vs-rezagos" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Capítulo: 8</span> <strong>6. Tasa Lag1 vs Rezagos</strong><a href="tasa-lag1-vs-rezagos.html#tasa-lag1-vs-rezagos" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Las gráficas entre Tasa_lag1 y sus rezagos también muestran una alta correlación. Esto es de esperar, ya que los valores rezagados de una variable tienden a mostrar correlación fuerte con rezagos cercanos.</p>
+<p>Los gráficos de rezago muestran una clara autocorrelación tanto en las variables de Tasa como en el Promedio Móvil, lo que sugiere que los valores actuales están muy influenciados por sus valores anteriores.</p>
+<p>No se observan grandes fluctuaciones o cambios abruptos en la serie temporal, lo que implica que los datos de tasa y promedio móvil siguen una evolución suave a lo largo del tiempo.</p>
+<p>La estructura cíclica en los meses sugiere que existe un patrón estacional predecible, lo cual es clave para definir modelos de predicción de series temporales con componentes estacionales, como modelos ARIMA/SARIMA o de descomposición estacional.</p>
+<hr />
+<p>Descomposición: Con la función stl(), se descompone la serie en tendencia, estacionalidad y componente residual.</p>
+<p>Estacionariedad: La prueba ADF indica si la serie tiene una raíz unitaria (es decir, si no es estacionaria).</p>
+<p>Diferenciación: Si la serie no es estacionaria, la diferenciación la ayuda a volverse estacionaria.</p>
+<div id="descomposición" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Descomposición<a href="tasa-lag1-vs-rezagos.html#descomposición" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="estacionariedad" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Estacionariedad<a href="tasa-lag1-vs-rezagos.html#estacionariedad" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  ts_data
+## Dickey-Fuller = -1.15, Lag order = 6, p-value = 0.9133
+## alternative hypothesis: stationary</code></pre>
+</div>
+<div id="diferenciación" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Diferenciación<a href="tasa-lag1-vs-rezagos.html#diferenciación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="autocorrelación-acf-y-parcial-pacf" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Autocorrelación (ACF) y Parcial (PACF)<a href="tasa-lag1-vs-rezagos.html#autocorrelación-acf-y-parcial-pacf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## [1] &quot;Anio&quot;          &quot;Mes&quot;           &quot;Fecha&quot;         &quot;Tasa&quot;         
+## [5] &quot;PromedioMovil&quot; &quot;Tasa_lag1&quot;</code></pre>
+<pre><code>## [1] &quot;Fecha&quot; &quot;Tasa&quot;</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+</div>
+<div id="volver-a-verificar-la-estacionariedad-tras-la-diferenciación" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Volver a verificar la Estacionariedad tras la Diferenciación<a href="tasa-lag1-vs-rezagos.html#volver-a-verificar-la-estacionariedad-tras-la-diferenciación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  differenced_data
+## Dickey-Fuller = -3.0792, Lag order = 6, p-value = 0.1214
+## alternative hypothesis: stationary</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tasa-lag1-vs-rezagos.html#cb14-1" tabindex="-1"></a><span class="fu">library</span>(forecast) <span class="co"># Para el modelado ARIMA</span></span>
+<span id="cb14-2"><a href="tasa-lag1-vs-rezagos.html#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="tasa-lag1-vs-rezagos.html#cb14-3" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">colnames</span>(data2))  </span></code></pre></div>
+<pre><code>## [1] &quot;Anio&quot;          &quot;Mes&quot;           &quot;Fecha&quot;         &quot;Tasa&quot;         
+## [5] &quot;PromedioMovil&quot; &quot;Tasa_lag1&quot;</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tasa-lag1-vs-rezagos.html#cb16-1" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(data2[[<span class="st">&quot;Tasa&quot;</span>]], <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1999</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb16-2"><a href="tasa-lag1-vs-rezagos.html#cb16-2" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="tasa-lag1-vs-rezagos.html#cb16-3" tabindex="-1"></a><span class="co"># Graficar ACF y PACF</span></span>
+<span id="cb16-4"><a href="tasa-lag1-vs-rezagos.html#cb16-4" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb16-5"><a href="tasa-lag1-vs-rezagos.html#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="tasa-lag1-vs-rezagos.html#cb16-6" tabindex="-1"></a><span class="co"># Graficar ACF</span></span>
+<span id="cb16-7"><a href="tasa-lag1-vs-rezagos.html#cb16-7" tabindex="-1"></a><span class="co">#acf(ts_data, main = &quot;ACF de la Serie Original&quot;)</span></span>
+<span id="cb16-8"><a href="tasa-lag1-vs-rezagos.html#cb16-8" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="tasa-lag1-vs-rezagos.html#cb16-9" tabindex="-1"></a><span class="co"># Graficar PACF</span></span>
+<span id="cb16-10"><a href="tasa-lag1-vs-rezagos.html#cb16-10" tabindex="-1"></a><span class="co">#pacf(ts_data, main = &quot;PACF de la Serie Original&quot;)</span></span>
+<span id="cb16-11"><a href="tasa-lag1-vs-rezagos.html#cb16-11" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="tasa-lag1-vs-rezagos.html#cb16-12" tabindex="-1"></a><span class="co"># Ajustar el modelo ARIMA(0,0,3)(0,0,1)[12]</span></span>
+<span id="cb16-13"><a href="tasa-lag1-vs-rezagos.html#cb16-13" tabindex="-1"></a>modelo_arima <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts_data, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>), <span class="at">seasonal =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb16-14"><a href="tasa-lag1-vs-rezagos.html#cb16-14" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="tasa-lag1-vs-rezagos.html#cb16-15" tabindex="-1"></a><span class="co"># Resumen del modelo ajustado</span></span>
+<span id="cb16-16"><a href="tasa-lag1-vs-rezagos.html#cb16-16" tabindex="-1"></a><span class="fu">summary</span>(modelo_arima)</span></code></pre></div>
+<pre><code>## Series: ts_data 
+## ARIMA(0,0,3)(0,0,1)[12] with non-zero mean 
+## 
+## Coefficients:
+##          ma1     ma2     ma3    sma1    mean
+##       1.7171  1.6105  0.7743  0.5829  7.3301
+## s.e.  0.0381  0.0479  0.0376  0.0502  0.3817
+## 
+## sigma^2 = 0.724:  log likelihood = -389.13
+## AIC=790.27   AICc=790.55   BIC=812.65
+## 
+## Training set error measures:
+##                        ME      RMSE       MAE       MPE     MAPE      MASE
+## Training set -0.009182104 0.8439211 0.5782735 -5.077274 10.40789 0.2748598
+##                  ACF1
+## Training set 0.364348</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="tasa-lag1-vs-rezagos.html#cb18-1" tabindex="-1"></a><span class="co"># Graficar los residuos</span></span>
+<span id="cb18-2"><a href="tasa-lag1-vs-rezagos.html#cb18-2" tabindex="-1"></a><span class="fu">checkresiduals</span>(modelo_arima)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(0,0,3)(0,0,1)[12] with non-zero mean
+## Q* = 604.63, df = 20, p-value &lt; 2.2e-16
+## 
+## Model df: 4.   Total lags used: 24</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tasa-lag1-vs-rezagos.html#cb20-1" tabindex="-1"></a><span class="co"># Pronosticar 12 períodos (ajustado para cubrir hasta 2030)</span></span>
+<span id="cb20-2"><a href="tasa-lag1-vs-rezagos.html#cb20-2" tabindex="-1"></a>pronostico <span class="ot">&lt;-</span> <span class="fu">forecast</span>(modelo_arima, <span class="at">h =</span> <span class="dv">72</span>)  <span class="co"># 72 meses = 6 años</span></span>
+<span id="cb20-3"><a href="tasa-lag1-vs-rezagos.html#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="tasa-lag1-vs-rezagos.html#cb20-4" tabindex="-1"></a><span class="co"># Graficar el pronóstico con el eje x correcto</span></span>
+<span id="cb20-5"><a href="tasa-lag1-vs-rezagos.html#cb20-5" tabindex="-1"></a><span class="fu">plot</span>(pronostico, <span class="at">xlab =</span> <span class="st">&quot;Año&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Tasa&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Pronóstico de Tasa&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tasa-lag1-vs-rezagos.html#cb21-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">colnames</span>(data2))</span></code></pre></div>
+<pre><code>## [1] &quot;Anio&quot;          &quot;Mes&quot;           &quot;Fecha&quot;         &quot;Tasa&quot;         
+## [5] &quot;PromedioMovil&quot; &quot;Tasa_lag1&quot;</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tasa-lag1-vs-rezagos.html#cb23-1" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(data2[[<span class="st">&quot;Tasa&quot;</span>]], <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1999</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb23-2"><a href="tasa-lag1-vs-rezagos.html#cb23-2" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="tasa-lag1-vs-rezagos.html#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="tasa-lag1-vs-rezagos.html#cb23-4" tabindex="-1"></a><span class="co"># Normal QQ Plot de los residuos</span></span>
+<span id="cb23-5"><a href="tasa-lag1-vs-rezagos.html#cb23-5" tabindex="-1"></a><span class="co">#residuos_diff &lt;- residuals(modelo_arima_diff)</span></span>
+<span id="cb23-6"><a href="tasa-lag1-vs-rezagos.html#cb23-6" tabindex="-1"></a><span class="co">#par(mfrow = c(1, 1)) </span></span>
+<span id="cb23-7"><a href="tasa-lag1-vs-rezagos.html#cb23-7" tabindex="-1"></a><span class="co">#qqnorm(residuos_diff, main = &quot;Normal QQ Plot de Residuos&quot;)</span></span>
+<span id="cb23-8"><a href="tasa-lag1-vs-rezagos.html#cb23-8" tabindex="-1"></a><span class="co">#qqline(residuos_diff, col = &quot;red&quot;)</span></span>
+<span id="cb23-9"><a href="tasa-lag1-vs-rezagos.html#cb23-9" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="tasa-lag1-vs-rezagos.html#cb23-10" tabindex="-1"></a><span class="co"># Pronosticar 72 períodos (6 años)</span></span>
+<span id="cb23-11"><a href="tasa-lag1-vs-rezagos.html#cb23-11" tabindex="-1"></a><span class="co">#n_periods &lt;- 72</span></span>
+<span id="cb23-12"><a href="tasa-lag1-vs-rezagos.html#cb23-12" tabindex="-1"></a><span class="co">#pronostico_diff &lt;- forecast(modelo_arima_diff, h = n_periods)</span></span>
+<span id="cb23-13"><a href="tasa-lag1-vs-rezagos.html#cb23-13" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="tasa-lag1-vs-rezagos.html#cb23-14" tabindex="-1"></a><span class="co"># Graficar el pronóstico</span></span>
+<span id="cb23-15"><a href="tasa-lag1-vs-rezagos.html#cb23-15" tabindex="-1"></a><span class="co">#plot(pronostico_diff, main = &quot;Pronóstico de Tasa&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="tasa-lag1-vs-rezagos.html#cb24-1" tabindex="-1"></a><span class="co"># Cargar las bibliotecas necesarias</span></span>
+<span id="cb24-2"><a href="tasa-lag1-vs-rezagos.html#cb24-2" tabindex="-1"></a><span class="fu">library</span>(forecast)  <span class="co"># Para el modelado ARIMA</span></span>
+<span id="cb24-3"><a href="tasa-lag1-vs-rezagos.html#cb24-3" tabindex="-1"></a><span class="fu">library</span>(tseries)   <span class="co"># Para funciones adicionales</span></span>
+<span id="cb24-4"><a href="tasa-lag1-vs-rezagos.html#cb24-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)   <span class="co"># Para gráficos</span></span>
+<span id="cb24-5"><a href="tasa-lag1-vs-rezagos.html#cb24-5" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="tasa-lag1-vs-rezagos.html#cb24-6" tabindex="-1"></a><span class="co"># Verificar los nombres de las columnas en data2</span></span>
+<span id="cb24-7"><a href="tasa-lag1-vs-rezagos.html#cb24-7" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">colnames</span>(data2))</span></code></pre></div>
+<pre><code>## [1] &quot;Anio&quot;          &quot;Mes&quot;           &quot;Fecha&quot;         &quot;Tasa&quot;         
+## [5] &quot;PromedioMovil&quot; &quot;Tasa_lag1&quot;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="tasa-lag1-vs-rezagos.html#cb26-1" tabindex="-1"></a><span class="co"># Convertir los datos a un objeto ts, usando frecuencia mensual</span></span>
+<span id="cb26-2"><a href="tasa-lag1-vs-rezagos.html#cb26-2" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(data2[[<span class="st">&quot;Tasa&quot;</span>]], <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1999</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb26-3"><a href="tasa-lag1-vs-rezagos.html#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="tasa-lag1-vs-rezagos.html#cb26-4" tabindex="-1"></a><span class="co"># Probar la estacionariedad de la serie original</span></span>
+<span id="cb26-5"><a href="tasa-lag1-vs-rezagos.html#cb26-5" tabindex="-1"></a>adf_test <span class="ot">&lt;-</span> <span class="fu">adf.test</span>(ts_data, <span class="at">alternative =</span> <span class="st">&quot;stationary&quot;</span>)</span>
+<span id="cb26-6"><a href="tasa-lag1-vs-rezagos.html#cb26-6" tabindex="-1"></a><span class="fu">print</span>(adf_test)</span></code></pre></div>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  ts_data
+## Dickey-Fuller = -1.15, Lag order = 6, p-value = 0.9133
+## alternative hypothesis: stationary</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="tasa-lag1-vs-rezagos.html#cb28-1" tabindex="-1"></a><span class="co"># Diferenciar la serie si no es estacionaria</span></span>
+<span id="cb28-2"><a href="tasa-lag1-vs-rezagos.html#cb28-2" tabindex="-1"></a>differenced_data <span class="ot">&lt;-</span> <span class="fu">diff</span>(ts_data)</span>
+<span id="cb28-3"><a href="tasa-lag1-vs-rezagos.html#cb28-3" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="tasa-lag1-vs-rezagos.html#cb28-4" tabindex="-1"></a><span class="co"># Probar la estacionariedad de la serie diferenciada</span></span>
+<span id="cb28-5"><a href="tasa-lag1-vs-rezagos.html#cb28-5" tabindex="-1"></a>adf_test_diff <span class="ot">&lt;-</span> <span class="fu">adf.test</span>(differenced_data, <span class="at">alternative =</span> <span class="st">&quot;stationary&quot;</span>)</span>
+<span id="cb28-6"><a href="tasa-lag1-vs-rezagos.html#cb28-6" tabindex="-1"></a><span class="fu">print</span>(adf_test_diff)</span></code></pre></div>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  differenced_data
+## Dickey-Fuller = -3.0792, Lag order = 6, p-value = 0.1214
+## alternative hypothesis: stationary</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="tasa-lag1-vs-rezagos.html#cb30-1" tabindex="-1"></a><span class="co"># Ajustar el modelo ARIMA(0,1,3)(0,1,1)[12] si es necesario</span></span>
+<span id="cb30-2"><a href="tasa-lag1-vs-rezagos.html#cb30-2" tabindex="-1"></a>modelo_arima_diff <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts_data, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>), <span class="at">seasonal =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb30-3"><a href="tasa-lag1-vs-rezagos.html#cb30-3" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="tasa-lag1-vs-rezagos.html#cb30-4" tabindex="-1"></a><span class="co"># Resumen del modelo ajustado</span></span>
+<span id="cb30-5"><a href="tasa-lag1-vs-rezagos.html#cb30-5" tabindex="-1"></a><span class="fu">summary</span>(modelo_arima_diff)</span></code></pre></div>
+<pre><code>## Series: ts_data 
+## ARIMA(0,1,3)(0,1,1)[12] 
+## 
+## Coefficients:
+##          ma1     ma2     ma3     sma1
+##       0.3125  0.2829  0.2279  -0.8757
+## s.e.  0.0706  0.0527  0.0733   0.0470
+## 
+## sigma^2 = 0.1739:  log likelihood = -167.4
+## AIC=344.81   AICc=345.02   BIC=363.24
+## 
+## Training set error measures:
+##                      ME     RMSE       MAE       MPE     MAPE      MASE
+## Training set 0.03580656 0.405304 0.2349259 0.6962434 4.046636 0.1116629
+##                    ACF1
+## Training set 0.02835974</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tasa-lag1-vs-rezagos.html#cb32-1" tabindex="-1"></a><span class="co"># Graficar los residuos</span></span>
+<span id="cb32-2"><a href="tasa-lag1-vs-rezagos.html#cb32-2" tabindex="-1"></a><span class="fu">checkresiduals</span>(modelo_arima_diff)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(0,1,3)(0,1,1)[12]
+## Q* = 46.306, df = 20, p-value = 0.0007315
+## 
+## Model df: 4.   Total lags used: 24</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="tasa-lag1-vs-rezagos.html#cb34-1" tabindex="-1"></a><span class="co"># Normal QQ Plot de los residuos</span></span>
+<span id="cb34-2"><a href="tasa-lag1-vs-rezagos.html#cb34-2" tabindex="-1"></a>residuos_diff <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_arima_diff)</span>
+<span id="cb34-3"><a href="tasa-lag1-vs-rezagos.html#cb34-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))  <span class="co"># Asegúrate de que solo hay un gráfico en la ventana</span></span>
+<span id="cb34-4"><a href="tasa-lag1-vs-rezagos.html#cb34-4" tabindex="-1"></a><span class="fu">qqnorm</span>(residuos_diff, <span class="at">main =</span> <span class="st">&quot;Normal QQ Plot de Residuos&quot;</span>)</span>
+<span id="cb34-5"><a href="tasa-lag1-vs-rezagos.html#cb34-5" tabindex="-1"></a><span class="fu">qqline</span>(residuos_diff, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tasa-lag1-vs-rezagos.html#cb35-1" tabindex="-1"></a><span class="co"># Realizar el test de normalidad de Shapiro-Wilk</span></span>
+<span id="cb35-2"><a href="tasa-lag1-vs-rezagos.html#cb35-2" tabindex="-1"></a>shapiro_test <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>(residuos_diff)</span>
+<span id="cb35-3"><a href="tasa-lag1-vs-rezagos.html#cb35-3" tabindex="-1"></a><span class="fu">print</span>(shapiro_test)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuos_diff
+## W = 0.7956, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tasa-lag1-vs-rezagos.html#cb37-1" tabindex="-1"></a><span class="co"># Pronosticar 72 períodos (6 años)</span></span>
+<span id="cb37-2"><a href="tasa-lag1-vs-rezagos.html#cb37-2" tabindex="-1"></a>n_periods <span class="ot">&lt;-</span> <span class="dv">72</span></span>
+<span id="cb37-3"><a href="tasa-lag1-vs-rezagos.html#cb37-3" tabindex="-1"></a>pronostico_diff <span class="ot">&lt;-</span> <span class="fu">forecast</span>(modelo_arima_diff, <span class="at">h =</span> n_periods)</span>
+<span id="cb37-4"><a href="tasa-lag1-vs-rezagos.html#cb37-4" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="tasa-lag1-vs-rezagos.html#cb37-5" tabindex="-1"></a><span class="co"># Graficar el pronóstico</span></span>
+<span id="cb37-6"><a href="tasa-lag1-vs-rezagos.html#cb37-6" tabindex="-1"></a><span class="fu">plot</span>(pronostico_diff, <span class="at">main =</span> <span class="st">&quot;Pronóstico de Tasa&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="tasa-lag1-vs-rezagos.html#cb38-1" tabindex="-1"></a><span class="co">#install.packages(&quot;fGarch&quot;, repos = &quot;http://cran.us.r-project.org&quot;)</span></span>
+<span id="cb38-2"><a href="tasa-lag1-vs-rezagos.html#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="tasa-lag1-vs-rezagos.html#cb38-3" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="tasa-lag1-vs-rezagos.html#cb38-4" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(data2[[<span class="st">&quot;Tasa&quot;</span>]], <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">1999</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb38-5"><a href="tasa-lag1-vs-rezagos.html#cb38-5" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="tasa-lag1-vs-rezagos.html#cb38-6" tabindex="-1"></a>adf_test <span class="ot">&lt;-</span> <span class="fu">adf.test</span>(ts_data, <span class="at">alternative =</span> <span class="st">&quot;stationary&quot;</span>)</span>
+<span id="cb38-7"><a href="tasa-lag1-vs-rezagos.html#cb38-7" tabindex="-1"></a><span class="fu">print</span>(adf_test)</span></code></pre></div>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  ts_data
+## Dickey-Fuller = -1.15, Lag order = 6, p-value = 0.9133
+## alternative hypothesis: stationary</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tasa-lag1-vs-rezagos.html#cb40-1" tabindex="-1"></a>differenced_data <span class="ot">&lt;-</span> <span class="fu">diff</span>(ts_data)</span>
+<span id="cb40-2"><a href="tasa-lag1-vs-rezagos.html#cb40-2" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="tasa-lag1-vs-rezagos.html#cb40-3" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="tasa-lag1-vs-rezagos.html#cb40-4" tabindex="-1"></a>adf_test_diff <span class="ot">&lt;-</span> <span class="fu">adf.test</span>(differenced_data, <span class="at">alternative =</span> <span class="st">&quot;stationary&quot;</span>)</span>
+<span id="cb40-5"><a href="tasa-lag1-vs-rezagos.html#cb40-5" tabindex="-1"></a><span class="fu">print</span>(adf_test_diff)</span></code></pre></div>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  differenced_data
+## Dickey-Fuller = -3.0792, Lag order = 6, p-value = 0.1214
+## alternative hypothesis: stationary</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="tasa-lag1-vs-rezagos.html#cb42-1" tabindex="-1"></a><span class="co"># Ajustar el modelo ARIMA(0,1,3)(0,1,1)[12]</span></span>
+<span id="cb42-2"><a href="tasa-lag1-vs-rezagos.html#cb42-2" tabindex="-1"></a>modelo_arima_diff <span class="ot">&lt;-</span> <span class="fu">Arima</span>(ts_data, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>), <span class="at">seasonal =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb42-3"><a href="tasa-lag1-vs-rezagos.html#cb42-3" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="tasa-lag1-vs-rezagos.html#cb42-4" tabindex="-1"></a><span class="co"># Resumen del modelo ajustado</span></span>
+<span id="cb42-5"><a href="tasa-lag1-vs-rezagos.html#cb42-5" tabindex="-1"></a><span class="fu">summary</span>(modelo_arima_diff)</span></code></pre></div>
+<pre><code>## Series: ts_data 
+## ARIMA(0,1,3)(0,1,1)[12] 
+## 
+## Coefficients:
+##          ma1     ma2     ma3     sma1
+##       0.3125  0.2829  0.2279  -0.8757
+## s.e.  0.0706  0.0527  0.0733   0.0470
+## 
+## sigma^2 = 0.1739:  log likelihood = -167.4
+## AIC=344.81   AICc=345.02   BIC=363.24
+## 
+## Training set error measures:
+##                      ME     RMSE       MAE       MPE     MAPE      MASE
+## Training set 0.03580656 0.405304 0.2349259 0.6962434 4.046636 0.1116629
+##                    ACF1
+## Training set 0.02835974</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tasa-lag1-vs-rezagos.html#cb44-1" tabindex="-1"></a><span class="co"># Graficar los residuos</span></span>
+<span id="cb44-2"><a href="tasa-lag1-vs-rezagos.html#cb44-2" tabindex="-1"></a><span class="fu">checkresiduals</span>(modelo_arima_diff)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(0,1,3)(0,1,1)[12]
+## Q* = 46.306, df = 20, p-value = 0.0007315
+## 
+## Model df: 4.   Total lags used: 24</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tasa-lag1-vs-rezagos.html#cb46-1" tabindex="-1"></a><span class="co"># Normal QQ Plot de los residuos</span></span>
+<span id="cb46-2"><a href="tasa-lag1-vs-rezagos.html#cb46-2" tabindex="-1"></a>residuos_diff <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_arima_diff)</span>
+<span id="cb46-3"><a href="tasa-lag1-vs-rezagos.html#cb46-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))  </span>
+<span id="cb46-4"><a href="tasa-lag1-vs-rezagos.html#cb46-4" tabindex="-1"></a><span class="fu">qqnorm</span>(residuos_diff, <span class="at">main =</span> <span class="st">&quot;Normal QQ Plot de Residuos&quot;</span>)</span>
+<span id="cb46-5"><a href="tasa-lag1-vs-rezagos.html#cb46-5" tabindex="-1"></a><span class="fu">qqline</span>(residuos_diff, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tasa-lag1-vs-rezagos.html#cb47-1" tabindex="-1"></a><span class="co"># Realizar el test de normalidad de Shapiro-Wilk</span></span>
+<span id="cb47-2"><a href="tasa-lag1-vs-rezagos.html#cb47-2" tabindex="-1"></a>shapiro_test <span class="ot">&lt;-</span> <span class="fu">shapiro.test</span>(residuos_diff)</span>
+<span id="cb47-3"><a href="tasa-lag1-vs-rezagos.html#cb47-3" tabindex="-1"></a><span class="fu">print</span>(shapiro_test)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuos_diff
+## W = 0.7956, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tasa-lag1-vs-rezagos.html#cb49-1" tabindex="-1"></a><span class="co"># Análisis de volatilidad utilizando fGarch</span></span>
+<span id="cb49-2"><a href="tasa-lag1-vs-rezagos.html#cb49-2" tabindex="-1"></a>garch_model <span class="ot">&lt;-</span> <span class="fu">garch</span>(residuos_diff, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
+<pre><code>## 
+##  ***** ESTIMATION WITH ANALYTICAL GRADIENT ***** 
+## 
+## 
+##      I     INITIAL X(I)        D(I)
+## 
+##      1     1.471681e-01     1.000e+00
+##      2     5.000000e-02     1.000e+00
+##      3     5.000000e-02     1.000e+00
+## 
+##     IT   NF      F         RELDF    PRELDF    RELDX   STPPAR   D*STEP   NPRELDF
+##      0    1 -1.336e+02
+##      1    3 -1.502e+02  1.11e-01  1.26e-01  3.5e-01  1.9e+03  1.0e-01  1.18e+02
+##      2    4 -1.536e+02  2.19e-02  8.14e-02  2.5e-01  2.2e+00  1.0e-01  7.36e+02
+##      3    6 -1.606e+02  4.39e-02  3.93e-02  5.1e-02  3.9e+00  2.3e-02  4.21e+02
+##      4    7 -1.657e+02  3.08e-02  6.33e-02  9.6e-02  3.9e+00  4.6e-02  4.92e+02
+##      5    8 -1.708e+02  2.98e-02  4.44e-02  7.7e-02  2.0e+00  4.6e-02  1.72e+02
+##      6    9 -1.763e+02  3.12e-02  3.25e-02  6.6e-02  2.0e+00  4.6e-02  1.55e+02
+##      7   10 -1.833e+02  3.82e-02  5.07e-02  1.2e-01  2.0e+00  9.2e-02  6.74e+01
+##      8   12 -1.842e+02  4.82e-03  1.46e-02  2.4e-02  2.0e+00  2.2e-02  2.40e+01
+##      9   13 -1.867e+02  1.33e-02  1.73e-02  1.8e-02  2.0e+00  2.2e-02  1.28e+01
+##     10   16 -1.936e+02  3.54e-02  9.56e-02  1.9e-01  2.0e+00  2.5e-01  1.21e+01
+##     11   21 -1.978e+02  2.13e-02  6.13e-02  1.1e-02  3.1e+00  1.2e-02  3.57e-01
+##     12   22 -1.981e+02  1.79e-03  1.32e-03  9.3e-03  2.0e+00  1.2e-02  7.32e-03
+##     13   23 -1.983e+02  6.06e-04  8.60e-04  7.5e-03  2.0e+00  1.2e-02  3.02e-02
+##     14   26 -1.984e+02  7.73e-04  1.10e-03  3.7e-02  1.8e+00  5.4e-02  1.40e-02
+##     15   27 -1.985e+02  6.45e-04  1.26e-03  4.7e-02  1.5e+00  5.4e-02  5.86e-03
+##     16   29 -1.986e+02  6.98e-05  1.39e-04  1.2e-02  9.5e-01  1.8e-02  2.86e-04
+##     17   30 -1.986e+02  4.70e-05  6.56e-05  1.1e-02  6.4e-01  1.8e-02  7.84e-05
+##     18   32 -1.986e+02  9.40e-07  4.03e-06  3.0e-03  7.1e-01  4.4e-03  5.67e-06
+##     19   35 -1.986e+02  2.06e-07  5.00e-07  5.0e-04  1.4e+00  7.4e-04  1.80e-06
+##     20   38 -1.986e+02  9.89e-08  1.38e-07  1.6e-04  1.8e+00  2.4e-04  1.34e-06
+##     21   41 -1.986e+02  2.63e-08  4.21e-08  5.6e-05  1.9e+00  8.2e-05  1.22e-06
+##     22   53 -1.986e+02  4.29e-16  3.48e-18  3.0e-15  6.7e+08  4.9e-15  1.18e-06
+##     23   54 -1.986e+02 -7.16e-16  6.95e-18  5.9e-15  3.3e+08  9.8e-15  1.18e-06
+## 
+##  ***** FALSE CONVERGENCE *****
+## 
+##  FUNCTION    -1.985695e+02   RELDX        5.909e-15
+##  FUNC. EVALS      54         GRAD. EVALS      23
+##  PRELDF       6.954e-18      NPRELDF      1.176e-06
+## 
+##      I      FINAL X(I)        D(I)          G(I)
+## 
+##      1    2.417150e-02     1.000e+00     9.607e-02
+##      2    5.671540e-01     1.000e+00     5.482e-02
+##      3    4.193714e-01     1.000e+00    -8.692e-02</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tasa-lag1-vs-rezagos.html#cb51-1" tabindex="-1"></a><span class="fu">summary</span>(garch_model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## garch(x = residuos_diff, order = c(1, 1))
+## 
+## Model:
+## GARCH(1,1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -4.45689 -0.39305  0.05776  0.43589  5.18143 
+## 
+## Coefficient(s):
+##     Estimate  Std. Error  t value Pr(&gt;|t|)    
+## a0  0.024172    0.003891    6.212 5.25e-10 ***
+## a1  0.567154    0.080415    7.053 1.75e-12 ***
+## b1  0.419371    0.071239    5.887 3.94e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Diagnostic Tests:
+##  Jarque Bera Test
+## 
+## data:  Residuals
+## X-squared = 390.33, df = 2, p-value &lt; 2.2e-16
+## 
+## 
+##  Box-Ljung test
+## 
+## data:  Squared.Residuals
+## X-squared = 0.11988, df = 1, p-value = 0.7292</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tasa-lag1-vs-rezagos.html#cb53-1" tabindex="-1"></a><span class="co"># Resumen de los residuos</span></span>
+<span id="cb53-2"><a href="tasa-lag1-vs-rezagos.html#cb53-2" tabindex="-1"></a>residuos_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(residuos_diff)</span>
+<span id="cb53-3"><a href="tasa-lag1-vs-rezagos.html#cb53-3" tabindex="-1"></a><span class="fu">print</span>(residuos_summary)</span></code></pre></div>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -1.45643 -0.11092  0.01333  0.03581  0.14946  3.48249</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="promedio-movil-vs-rezagos-lag-1-2-3.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

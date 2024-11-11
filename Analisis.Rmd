@@ -1,0 +1,575 @@
+---
+title: "Analisis Tasa de Intervencion"
+author: "Gabriel Orozco/Diana Aguirre/Edgard Camacho"
+date: "2024-10-21"
+output: html_document
+---
+
+#1 Enunciado:
+
+En este momento deberemos retomar la Unidad 1 en la cual se creó un minilibro que contiene el entregable de dicha unidad. Este documento tiene como repositorio GitHub (elaborado desde Markdown). Ahora, en esta Unidad 2, se debe continuar con los datos presentados en dicho entregable y se debe evidenciar, en una de las variables en el tiempo, la aproximación en promedio móvil, en rezagos y en estacionalidad. Todo lo anterior, a través de funciones y gráficas que permitan detectar patrones y ciclos de la variable.
+
+# 2 Análisis exploratorio:
+
+```{r echo=FALSE, message=FALSE}
+#install.packages("readxl")
+#install.packages("forecast")
+#install.packages("timsac")
+#install.packages("changepoint")
+#install.packages("kableExtra")
+#install.packages("bookdown")
+#install.packages("xfun")
+
+
+library(readxl)
+library(forecast) # Recomendada profesora
+library(ggplot2)
+library(tseries) # Recomendada profesora
+library(timsac)
+library(changepoint)
+library(dplyr)
+library(lubridate)
+library(tidyr)
+library(kableExtra)
+library(knitr)
+library(zoo)
+library(scales)
+
+
+
+
+
+```
+
+```{r}
+#remove.packages("xfun")
+```
+
+
+
+```{r echo=FALSE}
+data <- read_excel("1.2.TIP_Serie historica diaria.xlsx")
+```
+
+```{r echo=FALSE, warning=FALSE}
+str(data)
+```
+
+Los datos representan una serie de tiempo de 310 filas y 2 columnas, correspondientes a la fecha y a la tasa. Se observa que la fecha realmente corresponde a un dato mensual por tanto conviene ajustar el formato.
+
+
+```{r echo=FALSE, warning=FALSE}
+# Primer y último registro del dataset
+resultado <- rbind(head(data, 1), tail(data, 1))
+print(resultado)
+
+```
+Al consultar el primer y último registro del dataset, se identifica que la observación más reciente corresponde al mes de octubre de 2024 con una tasa de 10.25%, mientras que el registro más antiguo es de enero de 1999, con una tasa de 26%. Estos datos indican que el dataset abarca un período de aproximadamente 25 años (310 meses), desde finales del siglo XX hasta la fecha actual, reflejando un amplio intervalo temporal que podría incluir distintas tendencias o cambios económicos en la variable Tasa.
+
+```{r echo=FALSE, warning=FALSE}
+summary(data)
+```
+
+* La serie cubre un rango de 25 años, con la mediana alrededor de 2011, lo que sugiere que los datos están relativamente bien distribuidos a lo largo del tiempo.
+*  La tasa tiene una amplia variabilidad, con un valor mínimo de 1.75 y un máximo de 26. La mayor parte de los valores se concentran entre 4.25 y 9.25 (entre el primer y tercer cuartil). 
+
+No se identifican datos ausentes:
+
+```{r echo=FALSE, warning=FALSE}
+n_nas_por_columna <- colSums(is.na(data))
+print(n_nas_por_columna)
+```
+
+
+
+
+```{r echo=FALSE, warning=FALSE}
+#Se realiza una copia del dataset por seguridad.
+data2 <- data
+
+```
+
+Con el código siguiente, se agregan dos columnas adicionales, llamadas **Anio** y **Mes**, lo anterior para poder tener una mejor visual de los datos, teniendo en cuenta el gran número de registros que tiene el dataset.
+
+
+```{r echo=FALSE, warning=FALSE}
+
+
+data2 <- data2 %>%
+  mutate(Fecha = as.Date(Fecha), Anio = year(Fecha), Mes = month(Fecha, label = TRUE, abbr = TRUE)) %>%
+  select(Anio, Mes, everything())
+
+head(data2)
+
+
+
+```
+
+# 3. Gráficos de visualización:
+
+
+```{r echo=FALSE, warning=FALSE}
+ggplot(data2, aes(x = Fecha, y = Tasa)) +
+  geom_point(color = "blue", size = 2) + 
+  geom_smooth(method = "loess", color = "red", se = FALSE) +  
+  labs(title = "Tasa a lo largo del tiempo",
+       x = "Tiempo",
+       y = "Tasa") +
+  scale_x_date(date_labels = "%Y-%m", date_breaks = "1 month") +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.major = element_line(color = "lightgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+* **Puntos Azules:** Los puntos azules indican los valores de "Tasa" en momentos específicos. Hay una dispersión considerable, sugiriendo que la tasa ha experimentado fluctuaciones a lo largo del tiempo.
+
+* **Línea Roja:** Esta línea es el resultado de un ajuste de suavización (usando el método LOESS). La línea roja ilustra la tendencia general de la "Tasa" a lo largo del tiempo. A partir de la línea, se puede observar que, aunque hay variaciones, existe una tendencia que se puede analizar para hacer predicciones o entender mejor el comportamiento de la variable.
+
+* **Variaciones:** La gráfica muestra que la Tasa ha tenido picos y valles, lo que podría indicar variaciones estacionales o influencias externas que afectan la variable a lo largo del tiempo. A partir de la línea de suavización, parece que la Tasa ha ido disminuyendo o estabilizándose en ciertos períodos, teniendo una caída significativa desde 1999 hasta 2003,  y un aumento importante de 2021 a 2024.
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+
+data2 <- data2 %>%
+  mutate(Fecha = as.Date(Fecha))
+
+ggplot(data2, aes(x = Anio, y = Tasa)) +
+  geom_point(color = "blue", size = 2) +  # Puntos en azul
+  geom_line(color = "blue", size = 1) +  # Línea azul
+  geom_smooth(method = "loess", color = "red", se = FALSE) +  # Tendencia en rojo
+  labs(title = "Tasa a lo largo del tiempo",
+       x = "Anio",
+       y = "Tasa") +
+  scale_x_continuous(breaks = seq(min(data2$Anio), max(data2$Anio), by = 2)) +  # Eje X de 2 en 2
+  scale_y_continuous(breaks = seq(min(data2$Tasa, na.rm = TRUE), max(data2$Tasa, na.rm = TRUE), by = 2)) +  # Eje Y de 2 en 2
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.major = element_line(color = "lightgrey")
+  )
+
+```
+
+
+Esta gráfica permite ver con más detalle los cambios de tendencia:
+
+* Desde 1999, se confirma la disminución significativa en la tasa, que empieza muy alta (cerca de 25) y cae rápidamente hasta estabilizarse alrededor de los años 2007-2008 en un valor muy inferior (por debajo de 10).
+
+* Entre 2005 y 2020, se observan picos y caídas a intervalos relativamente regulares, pero sin grandes cambios en los niveles generales hasta el repunte final.
+
+* Eentre 2010 y 2020, la tasa se mantiene más estable, con algunas oscilaciones en torno a los 5-10 puntos.
+
+* A partir de 2021, hay una tendencia de aumento, que se hace más pronunciada hacia los años más recientes. Esto podría ser consecuencia de algún cambio en las políticas o factores externos como la pandemia de COVID-19.
+
+* La línea de tendencia suavizada indica una caída rápida, seguida de un periodo de estabilización, y finalmente una tendencia de aumento en los años recientes, semejando una forma de "U" suavizada.
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+data2 <- data2 %>%
+  mutate(Fecha = as.Date(Fecha)) 
+
+# Agregar las columnas Año y Mes
+data2 <- data2 %>%
+  mutate(
+    Anio = year(Fecha),
+    Mes = month(Fecha, label = TRUE, abbr = TRUE)  
+  )
+
+# Crear la tabla de tasas por Año y Mes
+tabla_tasas <- data2 %>%
+  group_by(Anio, Mes) %>%
+  summarise(TasaPromedio = round(mean(Tasa, na.rm = TRUE), 1)) %>%  
+  pivot_wider(names_from = Mes, values_from = TasaPromedio)  
+
+# Mostrar la tabla en cuadrícula
+kable(tabla_tasas, format = "html") %>%
+  kable_styling(full_width = F, position = "left")
+
+
+```
+
+ A partir de la tabla se pueden confirmar las tendencias mencionadas anteriormente, con un comportamiento descendente en los 12 primeros años (1999 a 2010), una estabilización en los 5 años siguientes (2011-2015) y un incremento significativo en años recientes (2021 en adelante).
+
+
+  
+
+# 4. Análisis de serie de tiempo:
+
+## 4.1. Promedio o media móvil
+
+Permite analizar el mercado a través de las tendencias. La media móvil es una técnica estadística que se utiliza para analizar datos a lo largo del tiempo. Permite calcular la media de un conjunto de valores en un intervalo específico y luego desplazar ese intervalo a lo largo de la serie de datos para obtener una nueva serie de medias; lo que permite suavizar fluctuaciones en los datos así como resaltar tendencias.
+
+Se conoce como media móvil ya que el valor se calcula constantemente a medida que pasa el tiempo; de esta forma, la media cambia cada vez que los valores presentan alguna modificación.
+
+
+```{r echo=FALSE, warning=FALSE}
+# Calcular el promedio móvil
+data2$PromedioMovil <- rollmean(data2$Tasa, k = 3, fill = NA, align = "right")
+
+# Visualizar la tasa original y el promedio móvil
+ggplot(data2) +
+  geom_line(aes(x = Fecha, y = Tasa), color = "blue", size = 1, group = 1) +  # Tasa original
+  geom_line(aes(x = Fecha, y = PromedioMovil), color = "red", size = 1, group = 1) +  # Promedio móvil
+  labs(title = "Tasa y Promedio Movil a lo largo del tiempo",
+       x = "Fecha",
+       y = "Tasa") +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +  # Eje X de 2 en 2 años
+  scale_y_continuous(breaks = seq(0, max(data2$Tasa, na.rm = TRUE), by = 2)) +  # Eje Y de 2 en 2
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.major = element_line(color = "lightgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+
+```
+
+
+## 4.2. Rezago (operador backshift) y estacionalidad
+
+
+El rezago es una herramienta estadística para el análisis de series temporales, que permite observar el valor de una variable en un momento anterior, facilitando la identificación de patrones y tendencias a lo largo del tiempo.
+
+En cuanto a la estacionalidad, hace referencia a las variaciones periódicas y predecibles en los datos que ocurren en intervalos regulares.
+
+Con la incorporación de ambas herramientas es posible modelar y prever comportamientos futuros de las series temporales.
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+# Aplicar rezago de 1 período 
+data2$Tasa_lag1 <- dplyr::lag(data2$Tasa, n = 1)
+head(data2)
+
+```  
+
+
+```{r echo=FALSE, warning=FALSE}
+
+if (!is.ts(data2)) {
+  data2 <- ts(data2)
+}
+
+# Verificar si hay valores NA o infinitos
+if (any(is.na(data2)) || any(!is.finite(data2))) {
+  data2 <- na.omit(data2)  # Eliminar valores NA
+}
+
+# Generar el gráfico de rezago
+lag.plot(data2, lags = 3, do.lines = FALSE, main = "Grafico de Rezago")
+
+```
+
+La gráfica visualiza la correlación entre una variable y sus valores rezagados (delayed values). Este gráfico es útil para detectar patrones en series temporales y evaluar la autocorrelación en los datos.
+
+
+* **1. Año vs Rezagos (lag 1, 2, 3)**
+
+Las gráficas entre Año y sus diferentes rezagos muestran una relación lineal perfecta, lo que era de esperarse, ya que el valor de un año en un rezago anterior está directamente relacionado con los años consecutivos. Esto sugiere que el "Año" no aporta una variabilidad significativa en términos de cambios bruscos, es decir, la serie avanza sin saltos.
+
+
+* **2. Mes vs Rezagos (lag 1, 2, 3)**
+
+Las gráficas entre Mes y sus rezagos muestran una estructura cíclica, con puntos que siguen un patrón predecible. Esto tiene sentido, ya que los meses siguen un ciclo repetitivo de 12 unidades (de enero a diciembre).
+
+los meses correlacionan bien con sus rezagos inmediatos, pero a medida que aumenta el número de rezagos (lag 2, lag 3), el ciclo es más visible, lo que indica que la periodicidad estacional en los datos está bien representada.
+
+
+# **3. Fecha vs Rezagos (lag 1, 2, 3)**
+
+Similar al año, la relación entre Fecha y sus rezagos también muestra una estructura lineal. Esto era previsible, ya que las fechas están organizadas de manera continua. No se observan cambios abruptos o interrupciones que puedan señalar eventos singulares en la serie temporal.
+
+# **4. Tasa vs Rezagos (lag 1, 2, 3)**
+
+En las gráficas entre Tasa y sus rezagos, especialmente en el rezago 1 (lag 1), se aprecia una clara correlación positiva, lo que significa que la tasa en un mes está fuertemente relacionada con la tasa del mes anterior. Esta relación indica una persistencia en la tasa, es decir, no hay cambios abruptos entre periodos consecutivos.
+
+A medida que el rezago aumenta (lag 2 y lag 3), la relación sigue siendo positiva pero disminuye levemente, lo cual es normal: los valores más distantes en el tiempo tienen menos influencia directa entre sí, aunque todavía se observa cierta correlación.
+
+Esto sugiere que la serie de tasas no presenta grandes fluctuaciones a corto plazo y que los valores siguen un comportamiento más estable, lo que puede indicar una tendencia suave sin variaciones abruptas.
+
+
+# **5. Promedio Movil vs Rezagos (lag 1, 2, 3)**
+
+Similar a la "Tasa", las gráficas entre el Promedio Móvil y sus rezagos muestran una alta correlación, especialmente para lag 1. Esto sugiere que los promedios móviles no cambian drásticamente de un mes a otro, y los valores del promedio móvil están fuertemente ligados a los meses anteriores.
+A medida que aumenta el rezago (lag 2, lag 3), la correlación disminuye ligeramente, lo que indica que los valores anteriores siguen teniendo una influencia pero con una menor magnitud.
+
+
+
+* **6. Tasa Lag1 vs Rezagos**
+
+Las gráficas entre Tasa_lag1 y sus rezagos también muestran una alta correlación. Esto es de esperar, ya que los valores rezagados de una variable tienden a mostrar correlación fuerte con rezagos cercanos.
+
+
+
+Los gráficos de rezago muestran una clara autocorrelación tanto en las variables de Tasa como en el Promedio Móvil, lo que sugiere que los valores actuales están muy influenciados por sus valores anteriores.
+
+No se observan grandes fluctuaciones o cambios abruptos en la serie temporal, lo que implica que los datos de tasa y promedio móvil siguen una evolución suave a lo largo del tiempo.
+
+La estructura cíclica en los meses sugiere que existe un patrón estacional predecible, lo cual es clave para definir modelos de predicción de series temporales con componentes estacionales, como modelos ARIMA/SARIMA o de descomposición estacional.
+
+-------------
+
+Descomposición: Con la función stl(), se descompone la serie en tendencia, estacionalidad y componente residual.
+
+Estacionariedad: La prueba ADF indica si la serie tiene una raíz unitaria (es decir, si no es estacionaria).
+
+Diferenciación: Si la serie no es estacionaria, la diferenciación la ayuda a volverse estacionaria.
+
+
+## 4.3. descomposición
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+data2 <- as.data.frame(data2)
+
+# Convertir los datos a un objeto ts, usando frecuencia mensual
+ts_data <- ts(data2[["Tasa"]], start = c(2024, 5), frequency = 12)
+
+# Descomposición de la serie de tiempo
+descomposicion <- stl(ts_data, s.window = "periodic")
+
+# Graficar la descomposición
+plot(descomposicion, main = "Descomposicion de la Serie de Tiempo")
+
+```
+
+## 4.4. estacionariedad
+
+```{r echo=FALSE, warning=FALSE}
+
+# Prueba de Dickey-Fuller aumentada
+adf_test <- tseries::adf.test(ts_data, alternative = "stationary")
+
+# Mostrar resultado de la prueba ADF
+print(adf_test)
+
+```
+
+## 4.5. diferenciación
+
+```{r echo=FALSE, warning=FALSE}
+# Diferenciación de la serie
+differenced_data <- diff(ts_data)
+
+# Graficar la serie diferenciada
+plot(differenced_data, main = "Serie Diferenciada", ylab = "Diferencia de Tasa", xlab = "Tiempo")
+
+```
+
+## 4.6. Autocorrelación (ACF) y Parcial (PACF)
+
+```{r echo=FALSE, warning=FALSE}
+
+# Cargar las bibliotecas necesarias
+library(readxl)   # Para leer archivos Excel
+
+# Establecer el directorio de trabajo
+print(colnames(data2)) 
+
+
+
+# Verifica los nombres de las columnas para asegurarte de que "Tasa" existe
+print(colnames(data))  # Esto te mostrará los nombres de las columnas
+
+# Convertir los datos a un objeto ts, usando frecuencia mensual
+ts_data <- ts(data[["Tasa"]], start = c(2024, 5), frequency = 12)
+
+# Graficar ACF y PACF directamente en la ventana gráfica
+par(mfrow = c(1, 2))  # Dos gráficos en una fila
+
+# Graficar ACF
+acf(ts_data, main = "ACF de la Serie Original")
+
+# Graficar PACF
+pacf(ts_data, main = "PACF de la Serie Original")
+
+
+
+```
+
+## 4.7. Volver a verificar la Estacionariedad tras la Diferenciación
+```{r echo=FALSE, warning=FALSE}
+
+# Prueba de Dickey-Fuller aumentada en la serie diferenciada
+adf_test_diff <- tseries::adf.test(differenced_data, alternative = "stationary")
+
+# Mostrar resultado
+print(adf_test_diff)
+
+
+```
+
+```{r}
+
+library(forecast) # Para el modelado ARIMA
+
+print(colnames(data2))  
+
+ts_data <- ts(data2[["Tasa"]], start = c(1999, 1), frequency = 12)
+
+# Graficar ACF y PACF
+par(mfrow = c(1, 2))
+
+# Graficar ACF
+#acf(ts_data, main = "ACF de la Serie Original")
+
+# Graficar PACF
+#pacf(ts_data, main = "PACF de la Serie Original")
+
+# Ajustar el modelo ARIMA(0,0,3)(0,0,1)[12]
+modelo_arima <- Arima(ts_data, order = c(0, 0, 3), seasonal = c(0, 0, 1))
+
+# Resumen del modelo ajustado
+summary(modelo_arima)
+
+# Graficar los residuos
+checkresiduals(modelo_arima)
+
+# Pronosticar 12 períodos (ajustado para cubrir hasta 2030)
+pronostico <- forecast(modelo_arima, h = 72)  # 72 meses = 6 años
+
+# Graficar el pronóstico con el eje x correcto
+plot(pronostico, xlab = "Año", ylab = "Tasa", main = "Pronóstico de Tasa")
+
+```
+
+```{r}
+
+
+
+print(colnames(data2))
+
+
+ts_data <- ts(data2[["Tasa"]], start = c(1999, 1), frequency = 12)
+
+
+# Normal QQ Plot de los residuos
+#residuos_diff <- residuals(modelo_arima_diff)
+#par(mfrow = c(1, 1)) 
+#qqnorm(residuos_diff, main = "Normal QQ Plot de Residuos")
+#qqline(residuos_diff, col = "red")
+
+# Pronosticar 72 períodos (6 años)
+#n_periods <- 72
+#pronostico_diff <- forecast(modelo_arima_diff, h = n_periods)
+
+# Graficar el pronóstico
+#plot(pronostico_diff, main = "Pronóstico de Tasa")
+
+
+```
+
+```{r}
+# Cargar las bibliotecas necesarias
+library(forecast)  # Para el modelado ARIMA
+library(tseries)   # Para funciones adicionales
+library(ggplot2)   # Para gráficos
+
+# Verificar los nombres de las columnas en data2
+print(colnames(data2))
+
+# Convertir los datos a un objeto ts, usando frecuencia mensual
+ts_data <- ts(data2[["Tasa"]], start = c(1999, 1), frequency = 12)
+
+# Probar la estacionariedad de la serie original
+adf_test <- adf.test(ts_data, alternative = "stationary")
+print(adf_test)
+
+# Diferenciar la serie si no es estacionaria
+differenced_data <- diff(ts_data)
+
+# Probar la estacionariedad de la serie diferenciada
+adf_test_diff <- adf.test(differenced_data, alternative = "stationary")
+print(adf_test_diff)
+
+# Ajustar el modelo ARIMA(0,1,3)(0,1,1)[12] si es necesario
+modelo_arima_diff <- Arima(ts_data, order = c(0, 1, 3), seasonal = c(0, 1, 1))
+
+# Resumen del modelo ajustado
+summary(modelo_arima_diff)
+
+# Graficar los residuos
+checkresiduals(modelo_arima_diff)
+
+# Normal QQ Plot de los residuos
+residuos_diff <- residuals(modelo_arima_diff)
+par(mfrow = c(1, 1))  # Asegúrate de que solo hay un gráfico en la ventana
+qqnorm(residuos_diff, main = "Normal QQ Plot de Residuos")
+qqline(residuos_diff, col = "red")
+
+# Realizar el test de normalidad de Shapiro-Wilk
+shapiro_test <- shapiro.test(residuos_diff)
+print(shapiro_test)
+
+# Pronosticar 72 períodos (6 años)
+n_periods <- 72
+pronostico_diff <- forecast(modelo_arima_diff, h = n_periods)
+
+# Graficar el pronóstico
+plot(pronostico_diff, main = "Pronóstico de Tasa")
+
+```
+
+```{r}
+#install.packages("fGarch", repos = "http://cran.us.r-project.org")
+
+
+ts_data <- ts(data2[["Tasa"]], start = c(1999, 1), frequency = 12)
+
+adf_test <- adf.test(ts_data, alternative = "stationary")
+print(adf_test)
+
+differenced_data <- diff(ts_data)
+
+
+adf_test_diff <- adf.test(differenced_data, alternative = "stationary")
+print(adf_test_diff)
+
+# Ajustar el modelo ARIMA(0,1,3)(0,1,1)[12]
+modelo_arima_diff <- Arima(ts_data, order = c(0, 1, 3), seasonal = c(0, 1, 1))
+
+# Resumen del modelo ajustado
+summary(modelo_arima_diff)
+
+# Graficar los residuos
+checkresiduals(modelo_arima_diff)
+
+# Normal QQ Plot de los residuos
+residuos_diff <- residuals(modelo_arima_diff)
+par(mfrow = c(1, 1))  
+qqnorm(residuos_diff, main = "Normal QQ Plot de Residuos")
+qqline(residuos_diff, col = "red")
+
+# Realizar el test de normalidad de Shapiro-Wilk
+shapiro_test <- shapiro.test(residuos_diff)
+print(shapiro_test)
+
+# Análisis de volatilidad utilizando fGarch
+garch_model <- garch(residuos_diff, order = c(1, 1))
+summary(garch_model)
+
+# Resumen de los residuos
+residuos_summary <- summary(residuos_diff)
+print(residuos_summary)
+
+
+
+
+
+```
+

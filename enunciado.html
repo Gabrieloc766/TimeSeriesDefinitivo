@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Analisis Tasa de Intervencion</title>
+  <meta name="description" content="Analisis Tasa de Intervencion" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Analisis Tasa de Intervencion" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Analisis Tasa de Intervencion" />
+  
+  
+  
+
+<meta name="author" content="Gabriel Orozco/Diana Aguirre/Edgard Camacho" />
+
+
+<meta name="date" content="2024-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="definición-de-modelos.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analisis Tasa de Intervencion</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="enunciado.html"><a href="enunciado.html"><i class="fa fa-check"></i><b>1</b> <strong>Enunciado</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="enunciado.html"><a href="enunciado.html#análisis-exploratorio"><i class="fa fa-check"></i><b>1.1</b> Análisis exploratorio</a></li>
+<li class="chapter" data-level="1.2" data-path="enunciado.html"><a href="enunciado.html#gráficos-de-visualización"><i class="fa fa-check"></i><b>1.2</b> Gráficos de visualización</a></li>
+<li class="chapter" data-level="1.3" data-path="enunciado.html"><a href="enunciado.html#análisis-de-serie-de-tiempo"><i class="fa fa-check"></i><b>1.3</b> Análisis de serie de tiempo</a></li>
+<li class="chapter" data-level="1.4" data-path="enunciado.html"><a href="enunciado.html#promedio-o-media-móvil"><i class="fa fa-check"></i><b>1.4</b> Promedio o media móvil</a></li>
+<li class="chapter" data-level="1.5" data-path="enunciado.html"><a href="enunciado.html#rezago-operador-backshift-y-estacionalidad"><i class="fa fa-check"></i><b>1.5</b> Rezago (operador backshift) y estacionalidad</a></li>
+<li class="chapter" data-level="1.6" data-path="enunciado.html"><a href="enunciado.html#descomposición"><i class="fa fa-check"></i><b>1.6</b> Descomposición</a></li>
+<li class="chapter" data-level="1.7" data-path="enunciado.html"><a href="enunciado.html#estacionariedad"><i class="fa fa-check"></i><b>1.7</b> Estacionariedad</a></li>
+<li class="chapter" data-level="1.8" data-path="enunciado.html"><a href="enunciado.html#diferenciación"><i class="fa fa-check"></i><b>1.8</b> Diferenciación</a></li>
+<li class="chapter" data-level="1.9" data-path="enunciado.html"><a href="enunciado.html#volver-a-verificar-la-estacionariedad-tras-la-diferenciación"><i class="fa fa-check"></i><b>1.9</b> Volver a verificar la Estacionariedad tras la Diferenciación</a></li>
+<li class="chapter" data-level="1.10" data-path="enunciado.html"><a href="enunciado.html#autocorrelación-acf-y-parcial-pacf"><i class="fa fa-check"></i><b>1.10</b> Autocorrelación (ACF) y Parcial (PACF)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html"><i class="fa fa-check"></i><b>2</b> <strong>Definición de Modelos</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-arima"><i class="fa fa-check"></i><b>2.1</b> Modelo Arima</a></li>
+<li class="chapter" data-level="2.2" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#algoritmo-de-holt-winter"><i class="fa fa-check"></i><b>2.2</b> Algoritmo de Holt Winter</a></li>
+<li class="chapter" data-level="2.3" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-holt-winter"><i class="fa fa-check"></i><b>2.3</b> Modelo Holt-Winter</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analisis Tasa de Intervencion</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Analisis Tasa de Intervencion</h1>
+<p class="author"><em>Gabriel Orozco/Diana Aguirre/Edgard Camacho</em></p>
+<p class="date"><em>2024-10-21</em></p>
+</div>
+<div id="enunciado" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Capítulo: 1</span> <strong>Enunciado</strong><a href="enunciado.html#enunciado" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>En este momento deberemos retomar la Unidad 1 en la cual se creó un minilibro que contiene el entregable de dicha unidad. Este documento tiene como repositorio GitHub (elaborado desde Markdown). Ahora, en esta Unidad 2, se debe continuar con los datos presentados en dicho entregable y se debe evidenciar, en una de las variables en el tiempo, la aproximación en promedio móvil, en rezagos y en estacionalidad. Todo lo anterior, a través de funciones y gráficas que permitan detectar patrones y ciclos de la variable.</p>
+<div id="análisis-exploratorio" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Análisis exploratorio<a href="enunciado.html#análisis-exploratorio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## tibble [310 × 2] (S3: tbl_df/tbl/data.frame)
+##  $ Fecha: POSIXct[1:310], format: &quot;2024-10-01&quot; &quot;2024-09-01&quot; ...
+##  $ Tasa : num [1:310] 10.2 10.8 10.8 11.8 11.8 ...</code></pre>
+<p>Los datos representan una serie de tiempo de 310 filas y 2 columnas, correspondientes a la fecha y a la tasa. Se observa que la fecha realmente corresponde a un dato mensual por tanto conviene ajustar el formato.</p>
+<pre><code>## # A tibble: 2 × 2
+##   Fecha                Tasa
+##   &lt;dttm&gt;              &lt;dbl&gt;
+## 1 2024-10-01 00:00:00  10.2
+## 2 1999-01-01 00:00:00  26</code></pre>
+<p>Al consultar el primer y último registro del dataset, se identifica que la observación más reciente corresponde al mes de octubre de 2024 con una tasa de 10.25%, mientras que el registro más antiguo es de enero de 1999, con una tasa de 26%. Estos datos indican que el dataset abarca un periodo de aproximadamente 25 años (310 meses), desde finales del siglo XX hasta la fecha actual, reflejando un amplio intervalo temporal que podría incluir distintas tendencias o cambios económicos en la variable Tasa.</p>
+<pre><code>##      Fecha                             Tasa       
+##  Min.   :1999-01-01 00:00:00.00   Min.   : 1.750  
+##  1st Qu.:2005-06-08 12:00:00.00   1st Qu.: 4.250  
+##  Median :2011-11-16 00:00:00.00   Median : 6.000  
+##  Mean   :2011-11-16 00:18:34.83   Mean   : 6.957  
+##  3rd Qu.:2018-04-23 12:00:00.00   3rd Qu.: 9.250  
+##  Max.   :2024-10-01 00:00:00.00   Max.   :26.000</code></pre>
+<ul>
+<li>La serie cubre un rango de 25 años, con la mediana alrededor de 2011, lo que sugiere que los datos están relativamente bien distribuidos a lo largo del tiempo.</li>
+<li>La tasa tiene una amplia variabilidad, con un valor mínimo de 1.75 y un máximo de 26. La mayor parte de los valores se concentran entre 4.25 y 9.25 (entre el primer y tercer cuartil).</li>
+</ul>
+<p>No se identifican datos ausentes:</p>
+<pre><code>## Fecha  Tasa 
+##     0     0</code></pre>
+<p>Con el código siguiente, se agregan dos columnas adicionales, llamadas <strong>Año</strong> y <strong>Mes</strong>, lo anterior para poder tener una mejor visual de los datos, teniendo en cuenta el gran número de registros que tiene el dataset.</p>
+<pre><code>## # A tibble: 6 × 4
+##    Anio Mes   Fecha       Tasa
+##   &lt;dbl&gt; &lt;ord&gt; &lt;date&gt;     &lt;dbl&gt;
+## 1  2024 oct   2024-10-01  10.2
+## 2  2024 sept  2024-09-01  10.8
+## 3  2024 ago   2024-08-01  10.8
+## 4  2024 jul   2024-07-01  11.8
+## 5  2024 jun   2024-06-01  11.8
+## 6  2024 may   2024-05-01  12.2</code></pre>
+</div>
+<div id="gráficos-de-visualización" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Gráficos de visualización<a href="enunciado.html#gráficos-de-visualización" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li><p><strong>Puntos Azules:</strong> Los puntos azules indican los valores de “Tasa” en momentos específicos. Hay una dispersión considerable, sugiriendo que la tasa ha experimentado fluctuaciones a lo largo del tiempo.</p></li>
+<li><p><strong>Línea Roja:</strong> Esta línea es el resultado de un ajuste de suavización. La línea roja ilustra la tendencia general de la “Tasa” a lo largo del tiempo. A partir de la línea, se puede observar que, aunque hay variaciones, existe una tendencia que se puede analizar para hacer predicciones o entender mejor el comportamiento de la variable.</p></li>
+<li><p><strong>Variaciones:</strong> La gráfica muestra que la Tasa ha tenido picos y valles, lo que podría indicar variaciones estacionales o influencias externas que afectan la variable a lo largo del tiempo. A partir de la línea de suavización, parece que la Tasa ha ido disminuyendo o estabilizándose en ciertos períodos, teniendo una caída significativa desde 1999 hasta 2003, y un aumento importante de 2021 a 2024.</p></li>
+</ul>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Esta gráfica permite ver con más detalle los cambios de tendencia:</p>
+<ul>
+<li><p>Desde 1999, se confirma la disminución significativa en la tasa, que empieza muy alta (cerca de 25) y cae rápidamente hasta estabilizarse alrededor de los años 2007-2008 en un valor muy inferior (por debajo de 10).</p></li>
+<li><p>Entre 2005 y 2020, se observan picos y caídas a intervalos relativamente regulares, pero sin grandes cambios en los niveles generales hasta el repunte final.</p></li>
+<li><p>Eentre 2010 y 2020, la tasa se mantiene más estable, con algunas oscilaciones en torno a los 5-10 puntos.</p></li>
+<li><p>A partir de 2021, hay una tendencia de aumento, que se hace más pronunciada hacia los años más recientes. Esto podría ser consecuencia de algún cambio en las políticas o factores externos como la pandemia de COVID-19.</p></li>
+<li><p>La línea de tendencia suavizada indica una caída rápida, seguida de un periodo de estabilización, y finalmente una tendencia de aumento en los años recientes, semejando una forma de “U” suavizada.</p></li>
+</ul>
+<pre><code>## `summarise()` has grouped output by &#39;Anio&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<table class="table" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:right;">
+Anio
+</th>
+<th style="text-align:right;">
+ene
+</th>
+<th style="text-align:right;">
+feb
+</th>
+<th style="text-align:right;">
+mar
+</th>
+<th style="text-align:right;">
+abr
+</th>
+<th style="text-align:right;">
+may
+</th>
+<th style="text-align:right;">
+jun
+</th>
+<th style="text-align:right;">
+jul
+</th>
+<th style="text-align:right;">
+ago
+</th>
+<th style="text-align:right;">
+sept
+</th>
+<th style="text-align:right;">
+oct
+</th>
+<th style="text-align:right;">
+nov
+</th>
+<th style="text-align:right;">
+dic
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1999
+</td>
+<td style="text-align:right;">
+26.0
+</td>
+<td style="text-align:right;">
+26.0
+</td>
+<td style="text-align:right;">
+24.0
+</td>
+<td style="text-align:right;">
+20.0
+</td>
+<td style="text-align:right;">
+19.0
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+18.0
+</td>
+<td style="text-align:right;">
+17.0
+</td>
+<td style="text-align:right;">
+16.0
+</td>
+<td style="text-align:right;">
+16.0
+</td>
+<td style="text-align:right;">
+15.0
+</td>
+<td style="text-align:right;">
+13.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2000
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2001
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:right;">
+8.8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2002
+</td>
+<td style="text-align:right;">
+8.5
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2003
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2004
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.0
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2005
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2006
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2007
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+8.2
+</td>
+<td style="text-align:right;">
+8.2
+</td>
+<td style="text-align:right;">
+8.8
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2008
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2009
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+<td style="text-align:right;">
+9.5
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:right;">
+7.0
+</td>
+<td style="text-align:right;">
+7.0
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2010
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+<td style="text-align:right;">
+7.8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:right;">
+7.0
+</td>
+<td style="text-align:right;">
+7.0
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+6.2
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.2
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:right;">
+4.8
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2020
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2021
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.0
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+7.5
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+12.8
+</td>
+<td style="text-align:right;">
+12.8
+</td>
+<td style="text-align:right;">
+13.0
+</td>
+<td style="text-align:right;">
+13.0
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+<td style="text-align:right;">
+13.2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2024
+</td>
+<td style="text-align:right;">
+13.0
+</td>
+<td style="text-align:right;">
+12.8
+</td>
+<td style="text-align:right;">
+12.8
+</td>
+<td style="text-align:right;">
+12.2
+</td>
+<td style="text-align:right;">
+12.2
+</td>
+<td style="text-align:right;">
+11.8
+</td>
+<td style="text-align:right;">
+11.8
+</td>
+<td style="text-align:right;">
+10.8
+</td>
+<td style="text-align:right;">
+10.8
+</td>
+<td style="text-align:right;">
+10.2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+</tbody>
+</table>
+<p>A partir de la tabla se pueden confirmar las tendencias mencionadas anteriormente, con un comportamiento descendente en los 12 primeros años (1999 a 2010), una estabilización en los 5 años siguientes (2011-2015) y un incremento significativo en años recientes (2021 en adelante).</p>
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>El <strong>gráfico de dispersión temporal</strong>, presenta una tendencia decreciente al inicio (antes de 2005), seguida por un período de estabilización y una ligera recuperación hacia 2020. Después de 2020, la tasa muestra un aumento significativo. La caída inicial y el posterior aumento alrededor de 2020 son destacables.</p>
+</div>
+<div id="análisis-de-serie-de-tiempo" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Análisis de serie de tiempo<a href="enunciado.html#análisis-de-serie-de-tiempo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="promedio-o-media-móvil" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Promedio o media móvil<a href="enunciado.html#promedio-o-media-móvil" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Permite analizar el mercado a través de las tendencias. La media móvil es una técnica estadística que se utiliza para analizar datos a lo largo del tiempo. Permite calcular la media de un conjunto de valores en un intervalo específico y luego desplazar ese intervalo a lo largo de la serie de datos para obtener una nueva serie de medias; lo que permite suavizar fluctuaciones en los datos así como resaltar tendencias.</p>
+<p>Se conoce como media móvil ya que el valor se calcula constantemente a medida que pasa el tiempo; de esta forma, la media cambia cada vez que los valores presentan alguna modificación.</p>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_line()`).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="rezago-operador-backshift-y-estacionalidad" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Rezago (operador backshift) y estacionalidad<a href="enunciado.html#rezago-operador-backshift-y-estacionalidad" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El rezago es una herramienta estadística para el análisis de series temporales, que permite observar el valor de una variable en un momento anterior, facilitando la identificación de patrones y tendencias a lo largo del tiempo.</p>
+<p>En cuanto a la estacionalidad, hace referencia a las variaciones periódicas y predecibles en los datos que ocurren en intervalos regulares.</p>
+<p>Con la incorporación de ambas herramientas es posible modelar y prever comportamientos futuros de las series temporales.</p>
+<pre><code>## # A tibble: 6 × 6
+##    Anio Mes   Fecha       Tasa PromedioMovil Tasa_lag1
+##   &lt;dbl&gt; &lt;ord&gt; &lt;date&gt;     &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+## 1  2024 oct   2024-10-01  10.2          NA        NA  
+## 2  2024 sept  2024-09-01  10.8          NA        10.2
+## 3  2024 ago   2024-08-01  10.8          10.6      10.8
+## 4  2024 jul   2024-07-01  11.8          11.1      10.8
+## 5  2024 jun   2024-06-01  11.8          11.4      11.8
+## 6  2024 may   2024-05-01  12.2          11.9      11.8</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>La gráfica visualiza la correlación entre una variable y sus valores rezagados (delayed values). Este gráfico es útil para detectar patrones en series temporales y evaluar la autocorrelación en los datos.</p>
+<ul>
+<li><strong>Año vs Rezagos (lag 1, 2, 3)</strong></li>
+</ul>
+<p>Las gráficas entre Año y sus diferentes rezagos muestran una relación lineal perfecta, lo que era de esperarse, ya que el valor de un año en un rezago anterior está directamente relacionado con los años consecutivos. Esto sugiere que el “Año” no aporta una variabilidad significativa en términos de cambios bruscos, es decir, la serie avanza sin saltos.</p>
+<ul>
+<li><strong>Mes vs Rezagos (lag 1, 2, 3)</strong></li>
+</ul>
+<p>Las gráficas entre “Mes” y sus rezagos muestran una estructura cíclica, con puntos que siguen un patrón predecible. Esto tiene sentido, ya que los meses siguen un ciclo repetitivo de 12 unidades (de enero a diciembre).</p>
+<p>Los meses correlacionan bien con sus rezagos inmediatos, pero a medida que aumenta el número de rezagos (lag 2, lag 3), el ciclo es más visible, lo que indica que la periodicidad estacional en los datos está bien representada.</p>
+<ul>
+<li><strong>Fecha vs Rezagos (lag 1, 2, 3)</strong></li>
+</ul>
+<p>Similar al año, la relación entre “Fecha” y sus rezagos también muestra una estructura lineal. Esto era previsible, ya que las fechas están organizadas de manera continua. No se observan cambios abruptos o interrupciones que puedan señalar eventos singulares en la serie temporal.</p>
+<ul>
+<li><strong>Tasa vs Rezagos (lag 1, 2, 3)</strong></li>
+</ul>
+<p>En las gráficas entre “Tasa” y sus rezagos, especialmente en el rezago 1 (lag 1), se aprecia una clara correlación positiva, lo que significa que la tasa en un mes está fuertemente relacionada con la tasa del mes anterior. Esta relación indica una persistencia en la tasa, es decir, no hay cambios abruptos entre periodos consecutivos.</p>
+<p>A medida que el rezago aumenta (lag 2 y lag 3), la relación sigue siendo positiva pero disminuye levemente, lo cual es normal: los valores más distantes en el tiempo tienen menos influencia directa entre sí, aunque todavía se observa cierta correlación.</p>
+<p>Esto sugiere que la serie de tasas no presenta grandes fluctuaciones a corto plazo y que los valores siguen un comportamiento más estable, lo que puede indicar una tendencia suave sin variaciones abruptas.</p>
+<ul>
+<li><strong>Promedio Movil vs Rezagos (lag 1, 2, 3)</strong></li>
+</ul>
+<p>Similar a la “Tasa”, las gráficas entre el “Promedio Móvil” y sus rezagos muestran una alta correlación, especialmente para lag 1. Esto sugiere que los promedios móviles no cambian drásticamente de un mes a otro, y los valores del promedio móvil están fuertemente ligados a los meses anteriores.
+A medida que aumenta el rezago (lag 2, lag 3), la correlación disminuye ligeramente, lo que indica que los valores anteriores siguen teniendo una influencia pero con una menor magnitud.</p>
+<ul>
+<li><strong>Tasa Lag1 vs Rezagos</strong></li>
+</ul>
+<p>Las gráficas entre “Tasa_lag1” y sus rezagos también muestran una alta correlación. Esto es de esperar, ya que los valores rezagados de una variable tienden a mostrar correlación fuerte con rezagos cercanos.</p>
+<p>Los gráficos de rezago muestran una clara autocorrelación tanto en las variables de “Tas”a” como en el “Promedio Móvil”, lo que sugiere que los valores actuales están muy influenciados por sus valores anteriores.</p>
+<p>No se observan grandes fluctuaciones o cambios abruptos en la serie temporal, lo que implica que los datos de tasa y promedio móvil siguen una evolución suave a lo largo del tiempo.</p>
+<p>La estructura cíclica en los meses sugiere que existe un patrón estacional predecible, lo cual es clave para definir modelos de predicción de series temporales con componentes estacionales, como modelos ARIMA/SARIMA o de descomposición estacional.</p>
+</div>
+<div id="descomposición" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Descomposición<a href="enunciado.html#descomposición" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Con la función stl(), se descompone la serie en tendencia, estacionalidad y componente residual.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Con el gráfico correcto de descomposición, evidenciamos:</p>
+<ul>
+<li><strong>Data (Serie Original):</strong></li>
+</ul>
+<p>Se observa que las tasas de interés han pasado por varios ciclos a lo largo del tiempo, con un periodo inicial en el que las tasas eran más bajas (cerca de los años 2000). A partir de 2020, las tasas muestran un claro incremento, lo que puede reflejar una política monetaria más restrictiva o la respuesta del Banco de la República a factores como la inflación o la estabilidad macroeconómica.</p>
+<ul>
+<li><strong>Seasonal (Componente Estacional):</strong></li>
+</ul>
+<p>El componente estacional revela un ciclo repetitivo bastante regular a lo largo de los años, con un patrón de estacionalidad que parece repetirse anualmente. La estacionalidad es un componente importante y muestra que ciertos meses o épocas del año presentan picos o caídas en la tasa de interés, posiblemente asociados con dinámicas de liquidez o factores económicos específicos (como ciclos agrícolas, comerciales o el impacto de eventos globales cíclicos).
+Los picos más acentuados y las caídas rápidas indican que la estacionalidad tiene un impacto considerable, con cambios regulares de corto plazo que el Banco de la República puede usar para ajustar la política.</p>
+<ul>
+<li><strong>Trend (Componente de Tendencia):</strong></li>
+</ul>
+<p>La tendencia de largo plazo muestra un ciclo de aumento hacia finales de los años 2000, seguido de una disminución suave en los años posteriores. Sin embargo, desde alrededor de 2020, se observa un repunte claro de las tasas.
+Este aumento de las tasas a partir de 2020 puede estar relacionado con factores económicos recientes, como la pandemia de COVID-19, el aumento de la inflación global y las medidas que los bancos centrales, como el BanRep, tomaron para frenar la inflación y ajustar la política monetaria.
+El gráfico sugiere que la tasa de intervención ha seguido un patrón cíclico a largo plazo, con fases alternas de crecimiento y caída.</p>
+<ul>
+<li><strong>Remainder (Componente Residual):</strong></li>
+</ul>
+<p>El componente residual muestra las fluctuaciones que no pueden explicarse ni por la tendencia ni por la estacionalidad. Estas variaciones podrían deberse a eventos inesperados o choques externos que han afectado la política monetaria del país.
+Se observan varios picos de volatilidad, como por ejemplo, alrededor del 2002, 2008-2009 (coincidiendo con la crisis financiera global), y más recientemente en torno a 2020, que podría estar relacionado con los efectos económicos de la pandemia.</p>
+<p>La volatilidad hacia el final del gráfico es más alta, lo que podría indicar periodos de mayor incertidumbre económica o choques en los últimos años.</p>
+<ul>
+<li><p><strong>Tendencia de tasas crecientes:</strong> El reciente aumento de las tasas de interés refleja probablemente un intento del Banco de la República de controlar la inflación y mantener la estabilidad macroeconómica en medio de un entorno de incertidumbre global.</p></li>
+<li><p><strong>Estacionalidad significativa:</strong> El componente estacional muestra que la política monetaria sigue patrones regulares, lo cual puede estar vinculado con las necesidades cíclicas de liquidez en el mercado. Estos ciclos estacionales parecen estar bien definidos, lo que permite un ajuste más predecible de las tasas en el corto plazo.</p></li>
+<li><p><strong>Impacto de choques económicos:</strong> El componente residual sugiere que eventos económicos inesperados han afectado la política monetaria, especialmente en periodos de crisis como 2008 y 2020. Estos choques pueden generar fluctuaciones a corto plazo que no son fácilmente predecibles.</p></li>
+</ul>
+</div>
+<div id="estacionariedad" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Estacionariedad<a href="enunciado.html#estacionariedad" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La prueba ADF indica si la serie tiene una raíz unitaria (es decir, si no es estacionaria).</p>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  ts_data
+## Dickey-Fuller = -1.15, Lag order = 6, p-value = 0.9133
+## alternative hypothesis: stationary</code></pre>
+<p>El resultado del test muestra un valor de -1.15, con un p-valor de 0.9133. Dado que el p-valor es alto (mayor que un nivel de significancia común), sugiere que la serie temporal NO es estacionaria, por lo que podría requerir transformaciones adicionales, como la diferenciación, para hacerla estacionaria antes de modelarla.</p>
+</div>
+<div id="diferenciación" class="section level2 hasAnchor" number="1.8">
+<h2><span class="header-section-number">1.8</span> Diferenciación<a href="enunciado.html#diferenciación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Si una serie no es estacionaria, la diferenciación la ayuda a volverse estacionaria.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Al diferenciar la serie de tiempo, se observa en el gráfico una serie fluctuante en torno a cero. Esto es una señal de que la diferenciación ayudó a eliminar la tendencia de la serie original, haciendo que los valores oscilen alrededor de un valor medio estable, lo que suele indicar un proceso estacionario.</p>
+</div>
+<div id="volver-a-verificar-la-estacionariedad-tras-la-diferenciación" class="section level2 hasAnchor" number="1.9">
+<h2><span class="header-section-number">1.9</span> Volver a verificar la Estacionariedad tras la Diferenciación<a href="enunciado.html#volver-a-verificar-la-estacionariedad-tras-la-diferenciación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Realizar nuevamente el test de Dickey-Fuller sobre la serie diferenciada permite confirmar la estacionariedad alcanzada:</p>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  differenced_data
+## Dickey-Fuller = -3.0792, Lag order = 6, p-value = 0.1214
+## alternative hypothesis: stationary</code></pre>
+<p>El resultado del test de Dickey-Fuller aplicado a la serie diferenciada muestra un valor de estadístico de -3.0792 y un valor p de 0.1214. Aunque el estadístico es más bajo que en la serie inicial, el valor p sigue siendo mayor a 0.05, lo que significa que la serie diferenciada podría no ser completamente estacionaria, y podría sea necesario un segundo nivel de diferenciación o explorar otras transformaciones.</p>
+</div>
+<div id="autocorrelación-acf-y-parcial-pacf" class="section level2 hasAnchor" number="1.10">
+<h2><span class="header-section-number">1.10</span> Autocorrelación (ACF) y Parcial (PACF)<a href="enunciado.html#autocorrelación-acf-y-parcial-pacf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<ul>
+<li><p><strong>ACF:</strong> Las barras decrecientes sugieren una estructura de autocorrelación significativa, especialmente en los primeros rezagos, lo cual es típico en series con dependencia a corto plazo.</p></li>
+<li><p><strong>PACF:</strong> muestra una caída rápida después del primer rezago, lo cual sugiere que un modelo ARIMA de bajo orden podría ser adecuado para capturar la dinámica de la serie diferenciada.</p></li>
+</ul>
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<ul>
+<li><p><strong>Data:</strong> Se observa que a lo largo de la serie, existen varios picos, y la variabilidad parece aumentar en ciertos puntos. Esto indica que hay períodos con comportamiento anómalo o ruido.</p></li>
+<li><p><strong>Seasonal (Estacional):</strong> La componente estacional muestra una clara periodicidad, con patrones que se repiten consistentemente en intervalos regulares. Esto indica que la serie tiene un comportamiento cíclico fuerte. Este componente estacional es útil para capturar patrones que se repiten cada cierto tiempo.</p></li>
+<li><p><strong>Trend (Tendencia):</strong> La tendencia parece ser suave y muestra algunos cambios a lo largo del tiempo. Aunque la serie fue diferenciada, la tendencia residual indica que aún existen fluctuaciones de largo plazo, como un ligero aumento hacia el final de la serie. Esto sugiere que, aunque se haya eliminado una parte de la tendencia inicial mediante la diferenciación, todavía hay un componente de tendencia en los datos.</p></li>
+<li><p><strong>Remainder (Residuo):</strong> Este componente representa la variabilidad no explicada por la estacionalidad ni la tendencia. Se observan varios picos y una dispersión más amplia en ciertos puntos de la serie. Esto sugiere que puede haber variaciones aleatorias o anomalías en ciertos periodos, especialmente al final, donde los residuos son más grandes. La presencia de valores residuales grandes refuerza la idea de que hay eventos impredecibles o ruido en la serie.</p></li>
+</ul>
+<p>En resumen, la serie de tiempo diferenciada aún conserva una componente estacional significativa, y la tendencia residual es pequeña pero sigue presente. Los residuos presentan variaciones irregulares, especialmente al final, lo cual podría indicar la necesidad de modelar con más precisión estos picos o variabilidad.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="definición-de-modelos.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
