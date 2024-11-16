@@ -20,6 +20,13 @@ En este momento deberemos retomar la Unidad 1 en la cual se creó un minilibro q
 #install.packages("bookdown")
 #install.packages("xfun")
 #install.packages("bookdown")
+#install.packages("fabletools")
+#install.packages("Rcpp")
+#install.packages("prophet")
+#install.packages("robust")
+#install.packages("tsoutliers")
+
+
 
 
 
@@ -38,13 +45,11 @@ library(dplyr)
 library(lubridate)
 library(stats)
 library(bookdown)
-
-
-
-
-
-
-
+library(fabletools)
+library(Rcpp)
+library(prophet)
+library(robust)
+library(tsoutliers)
 ```
 
 
@@ -860,7 +865,8 @@ Beta (β = 0.2941339): Este es el parámetro de suavizado para el componente de 
 Gamma (γ = 1): Este es el parámetro de suavizado para el componente estacional. Un valor de γ = 1 sugiere que el modelo da completo peso a los componentes estacionales previos en la serie.
 
 
-```{r echo=FALSE}
+
+```{r}
 plot(fitted(modelo_HW), main='Descomposicion con HW', xlab='Anio', ylab='log(airmiles)')
 ```
 
@@ -875,14 +881,117 @@ El modelo Holt-Winters parece ajustarse adecuadamente a la serie, capturando tan
 
 **Se predice el método Holt Winters**
 
-```{r echo=FALSE}
+```{r}
 pred = predict(modelo_HW, 4, prediction.interval = TRUE)
 pred
 ```
+Con lo anterior, se evidencia una tedencia ascendente en las predicciones para los primeros 4 meses del 2025. De igual forma, se observa un incremento en la incertidumbre a medida que van pasando los meses. 
 
-```{r echo=FALSE}
+```{r}
 plot(modelo_HW, pred)
 ```
+
+
+
+## **Metodología Box Jenkins**
+
+
+Dentro de los pasos a seguir, tenemos
+
+Visualizar la serie.
+Transformarla en estacionaria.
+Graficar ACF - PACF, escoger los parámetros.
+Construir el modelo.
+Hacer predicción.
+
+
+```{r}
+
+#PASOS DEL DOCUMENTO DE LA PROFE
+
+# Detectar punto de cambio en la media 
+mval <- cpt.mean(ts_data, method = "AMOC")
+cpts(mval)
+
+
+```
+Sobre la serie original se encuentran 276 puntos de cambio de media.
+
+
+```{r}
+
+# Graficar la serie con el punto de cambio resaltado
+plot(mval, type = "l", cpt.col = "blue", xlab = "Índice de Tiempo", cpt.width = 4, 
+     main = "Punto de Cambio en la Media")
+
+```
+
+
+```{r}
+
+
+ndiffs(ts_data)
+
+```
+
+```{r}
+differenced_data2 <- diff(differenced_data)
+```
+
+
+
+```{r}
+
+# Detectar punto de cambio en la media 
+mval <- cpt.mean(differenced_data2, method = "AMOC")
+cpts(mval)
+
+
+mval_varios <- cpt.mean(differenced_data2, method = "PELT") # Detecta múltiples cambios
+cpts(mval_varios)
+
+```
+
+Al correr el código sobre la serie ya diferenciada el resultado es 0, indicando que no se ha detectado ningún cambio significativo en la media de la serie.
+Esto se debe a que al diferenciar la serie, se eliminan componentes como tendencia y cambios en la media, lo que puede hacer que la serie parezca más "estable" en términos de media.
+
+Incluso probando el método de cambio PELT, que es más flexible y busca múltiples puntos de cambio, el resultado sobre la serie diferenciado es 0, indicando que no se detectaron puntos de cambio significativos en la media de la serie de tiempo.
+
+
+
+```{r echo=FALSE}
+
+# Convertir differenced_data2 a un objeto de serie de tiempo con frecuencia 12 (pq la serie es mensual. 1 es si es diaria)
+
+dat.ts <- ts(differenced_data2, frequency = 12)
+
+# Detectar outliers en la serie diferenciada
+data.ts.outliers <- tso(dat.ts)
+
+# Mostrar los resultados de los outliers detectados
+print(data.ts.outliers)
+plot(data.ts.outliers)
+
+```
+
+
+
+```{r}
+
+
+# Ajustar un modelo lineal a la serie diferenciada o a la original si ya es estacionaria
+modelo_ajustado <- tslm(differenced_data2 ~ trend)
+summary(modelo_ajustado)
+
+#Graficar el modelo y los residuos para analizar el ajuste
+plot(differenced_data2, main="Serie Diferenciada (si fue necesario) y Modelo Lineal Ajustado", ylab="Valor", xlab="Tiempo")
+lines(fitted(modelo_ajustado), col="red")
+
+# Análisis de residuos
+checkresiduals(modelo_ajustado)
+
+```
+
 
 
 

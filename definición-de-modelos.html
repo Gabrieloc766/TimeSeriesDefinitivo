@@ -160,6 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-arima"><i class="fa fa-check"></i><b>2.1</b> Modelo Arima</a></li>
 <li class="chapter" data-level="2.2" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#algoritmo-de-holt-winter"><i class="fa fa-check"></i><b>2.2</b> Algoritmo de Holt Winter</a></li>
 <li class="chapter" data-level="2.3" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-holt-winter"><i class="fa fa-check"></i><b>2.3</b> Modelo Holt-Winter</a></li>
+<li class="chapter" data-level="2.4" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#metodología-box-jenkins"><i class="fa fa-check"></i><b>2.4</b> <strong>Metodología Box Jenkins</strong></a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
@@ -592,17 +593,109 @@ s.e. = 0.0620: El error estándar para sar1 es relativamente bajo, lo que indica
 <p>Alpha (α = 0.9409767): Este es el parámetro de suavizado para el componente de nivel. Un valor cercano a 1, como el que está arrojando el resultado, indica que el modelo le da gran peso a los datos recientes para estimar el nivel actual de la serie. Esto significa que las observaciones recientes tienen un impacto significativo en la estimación del nivel.</p>
 <p>Beta (β = 0.2941339): Este es el parámetro de suavizado para el componente de tendencia en el modelo de Holt-Winters. Un valor de β moderadamente bajo, como 0.2941339, sugiere que el modelo da un peso relativamente moderado a los cambios en la tendencia. Es decir, el modelo no es extremadamente sensible a las variaciones en la tendencia, pero sigue siendo capaz de capturarlas de manera significativa. Con este valor, el modelo ajusta la tendencia de forma más suave y gradual, lo que implica que no tiene una sobrereacción ante cambios recientes en la dirección de los datos.</p>
 <p>Gamma (γ = 1): Este es el parámetro de suavizado para el componente estacional. Un valor de γ = 1 sugiere que el modelo da completo peso a los componentes estacionales previos en la serie.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="definición-de-modelos.html#cb53-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(modelo_HW), <span class="at">main=</span><span class="st">&#39;Descomposicion con HW&#39;</span>, <span class="at">xlab=</span><span class="st">&#39;Anio&#39;</span>, <span class="at">ylab=</span><span class="st">&#39;log(airmiles)&#39;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>La tendencia ascendente en el nivel y la tendencia hacia el final del período (2025) sugiere que LA TASA está experimentando un crecimiento continuo.</p>
 <p>La componente estacional muestra ciclos regulares bien definidos, lo que puede ser útil para predicciones estacionales precisas.</p>
 <p>El modelo Holt-Winters parece ajustarse adecuadamente a la serie, capturando tanto las fluctuaciones estacionales como la tendencia de largo plazo.</p>
 <p><strong>Se predice el método Holt Winters</strong></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="definición-de-modelos.html#cb54-1" tabindex="-1"></a>pred <span class="ot">=</span> <span class="fu">predict</span>(modelo_HW, <span class="dv">4</span>, <span class="at">prediction.interval =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-2"><a href="definición-de-modelos.html#cb54-2" tabindex="-1"></a>pred</span></code></pre></div>
 <pre><code>##               fit      upr      lwr
 ## Jan 2025 27.44299 28.23593 26.65006
 ## Feb 2025 28.82328 30.07272 27.57383
 ## Mar 2025 30.04718 31.76924 28.32513
 ## Apr 2025 31.36194 33.58414 29.13975</code></pre>
+<p>Con lo anterior, se evidencia una tedencia ascendente en las predicciones para los primeros 4 meses del 2025. De igual forma, se observa un incremento en la incertidumbre a medida que van pasando los meses.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="definición-de-modelos.html#cb56-1" tabindex="-1"></a><span class="fu">plot</span>(modelo_HW, pred)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+</div>
+<div id="metodología-box-jenkins" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> <strong>Metodología Box Jenkins</strong><a href="definición-de-modelos.html#metodología-box-jenkins" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Dentro de los pasos a seguir, tenemos</p>
+<p>Visualizar la serie.
+Transformarla en estacionaria.
+Graficar ACF - PACF, escoger los parámetros.
+Construir el modelo.
+Hacer predicción.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="definición-de-modelos.html#cb57-1" tabindex="-1"></a><span class="co">#PASOS DEL DOCUMENTO DE LA PROFE</span></span>
+<span id="cb57-2"><a href="definición-de-modelos.html#cb57-2" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="definición-de-modelos.html#cb57-3" tabindex="-1"></a><span class="co"># Detectar punto de cambio en la media </span></span>
+<span id="cb57-4"><a href="definición-de-modelos.html#cb57-4" tabindex="-1"></a>mval <span class="ot">&lt;-</span> <span class="fu">cpt.mean</span>(ts_data, <span class="at">method =</span> <span class="st">&quot;AMOC&quot;</span>)</span>
+<span id="cb57-5"><a href="definición-de-modelos.html#cb57-5" tabindex="-1"></a><span class="fu">cpts</span>(mval)</span></code></pre></div>
+<pre><code>## [1] 276</code></pre>
+<p>Sobre la serie original se encuentran 276 puntos de cambio de media.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="definición-de-modelos.html#cb59-1" tabindex="-1"></a><span class="co"># Graficar la serie con el punto de cambio resaltado</span></span>
+<span id="cb59-2"><a href="definición-de-modelos.html#cb59-2" tabindex="-1"></a><span class="fu">plot</span>(mval, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">cpt.col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Índice de Tiempo&quot;</span>, <span class="at">cpt.width =</span> <span class="dv">4</span>, </span>
+<span id="cb59-3"><a href="definición-de-modelos.html#cb59-3" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Punto de Cambio en la Media&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="definición-de-modelos.html#cb60-1" tabindex="-1"></a><span class="fu">ndiffs</span>(ts_data)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="definición-de-modelos.html#cb62-1" tabindex="-1"></a>differenced_data2 <span class="ot">&lt;-</span> <span class="fu">diff</span>(differenced_data)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="definición-de-modelos.html#cb63-1" tabindex="-1"></a><span class="co"># Detectar punto de cambio en la media </span></span>
+<span id="cb63-2"><a href="definición-de-modelos.html#cb63-2" tabindex="-1"></a>mval <span class="ot">&lt;-</span> <span class="fu">cpt.mean</span>(differenced_data2, <span class="at">method =</span> <span class="st">&quot;AMOC&quot;</span>)</span>
+<span id="cb63-3"><a href="definición-de-modelos.html#cb63-3" tabindex="-1"></a><span class="fu">cpts</span>(mval)</span></code></pre></div>
+<pre><code>## numeric(0)</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="definición-de-modelos.html#cb65-1" tabindex="-1"></a>mval_varios <span class="ot">&lt;-</span> <span class="fu">cpt.mean</span>(differenced_data2, <span class="at">method =</span> <span class="st">&quot;PELT&quot;</span>) <span class="co"># Detecta múltiples cambios</span></span>
+<span id="cb65-2"><a href="definición-de-modelos.html#cb65-2" tabindex="-1"></a><span class="fu">cpts</span>(mval_varios)</span></code></pre></div>
+<pre><code>## integer(0)</code></pre>
+<p>Al correr el código sobre la serie ya diferenciada el resultado es 0, indicando que no se ha detectado ningún cambio significativo en la media de la serie.
+Esto se debe a que al diferenciar la serie, se eliminan componentes como tendencia y cambios en la media, lo que puede hacer que la serie parezca más “estable” en términos de media.</p>
+<p>Incluso probando el método de cambio PELT, que es más flexible y busca múltiples puntos de cambio, el resultado sobre la serie diferenciado es 0, indicando que no se detectaron puntos de cambio significativos en la media de la serie de tiempo.</p>
+<pre><code>## Warning in locate.outliers.iloop(resid = resid, pars = pars, cval = cval, :
+## stopped when &#39;maxit.iloop&#39; was reached
+## Warning in locate.outliers.iloop(resid = resid, pars = pars, cval = cval, :
+## stopped when &#39;maxit.iloop&#39; was reached
+## Warning in locate.outliers.iloop(resid = resid, pars = pars, cval = cval, :
+## stopped when &#39;maxit.iloop&#39; was reached</code></pre>
+<pre><code>## Warning in locate.outliers.oloop(y = y, fit = fit, types = types, cval = cval,
+## : stopped when &#39;maxit.oloop = 4&#39; was reached</code></pre>
+<pre><code>## Series: dat.ts 
+## Regression with ARIMA(1,0,1) errors 
+## 
+## Coefficients:
+##           ar1      ma1    LS305
+##       -0.0547  -0.6145  -0.8617
+## s.e.   0.0940   0.0813   0.2282
+## 
+## sigma^2 = 0.1482:  log likelihood = -140.84
+## AIC=289.68   AICc=289.81   BIC=304.57
+## 
+## Outliers:
+##   type ind  time coefhat  tstat
+## 1   LS 305 26:05 -0.8617 -3.777</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="definición-de-modelos.html#cb70-1" tabindex="-1"></a><span class="co"># Ajustar un modelo lineal a la serie diferenciada o a la original si ya es estacionaria</span></span>
+<span id="cb70-2"><a href="definición-de-modelos.html#cb70-2" tabindex="-1"></a>modelo_ajustado <span class="ot">&lt;-</span> <span class="fu">tslm</span>(differenced_data2 <span class="sc">~</span> trend)</span>
+<span id="cb70-3"><a href="definición-de-modelos.html#cb70-3" tabindex="-1"></a><span class="fu">summary</span>(modelo_ajustado)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## tslm(formula = differenced_data2 ~ trend)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.00556 -0.00474  0.00312  0.01061  2.99455 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) -0.0121558  0.0550426  -0.221    0.825
+## trend        0.0000579  0.0003108   0.186    0.852
+## 
+## Residual standard error: 0.4802 on 304 degrees of freedom
+## Multiple R-squared:  0.0001142,  Adjusted R-squared:  -0.003175 
+## F-statistic: 0.03471 on 1 and 304 DF,  p-value: 0.8523</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="definición-de-modelos.html#cb72-1" tabindex="-1"></a><span class="co">#Graficar el modelo y los residuos para analizar el ajuste</span></span>
+<span id="cb72-2"><a href="definición-de-modelos.html#cb72-2" tabindex="-1"></a><span class="fu">plot</span>(differenced_data2, <span class="at">main=</span><span class="st">&quot;Serie Diferenciada (si fue necesario) y Modelo Lineal Ajustado&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Valor&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Tiempo&quot;</span>)</span>
+<span id="cb72-3"><a href="definición-de-modelos.html#cb72-3" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">fitted</span>(modelo_ajustado), <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="definición-de-modelos.html#cb73-1" tabindex="-1"></a><span class="co"># Análisis de residuos</span></span>
+<span id="cb73-2"><a href="definición-de-modelos.html#cb73-2" tabindex="-1"></a><span class="fu">checkresiduals</span>(modelo_ajustado)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-46-2.png" width="672" /></p>
+<pre><code>## 
+##  Breusch-Godfrey test for serial correlation of order up to 24
+## 
+## data:  Residuals from Linear regression model
+## LM test = 122.2, df = 24, p-value = 3.937e-15</code></pre>
 </div>
 </div>
             </section>
