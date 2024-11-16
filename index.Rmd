@@ -893,7 +893,7 @@ plot(modelo_HW, pred)
 
 
 
-## **Metodología Box Jenkins**
+## Metodología Box Jenkins
 
 
 Dentro de los pasos a seguir, tenemos
