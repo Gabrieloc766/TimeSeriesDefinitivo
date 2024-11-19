@@ -485,7 +485,7 @@ A continuación se probarán dos alternativas de modelo ARIMA, de acuerdo con lo
 
 * Componentes AR y MA (p y q): Dado que p y q determinan la cantidad de términos autoregresivos y de promedio móvil, conviene probar con valores más altos para q y ajustar p de acuerdo con la correlación en los residuos. Esto puede ayudar a mejorar la precisión del modelo y su capacidad predictiva.
 
-```{r echo=FALSE}
+```{r}
 
 # Ajuste del modelo ARIMA - ALTERNATIVA 1
 modelo_arima <- Arima(differenced_data, order = c(1, 2, 3), seasonal = c(1, 1, 1))
@@ -510,7 +510,7 @@ plot(pronostico, xlab = "Anio", ylab = "Tasa", main = "Pronostico de Tasa")
 * d = 2 (diferenciación de segundo orden para hacer estacionaria la serie en términos de tendencia),
 * q = 3 (tres términos de promedio móvil).
 
-* **parámetros estacionales, donde:**
+* **parámetros estacionales*, donde:**
 
 * P = 1 (un término autoregresivo estacional),
 * D = 1 (diferenciación estacional),
@@ -528,7 +528,7 @@ plot(pronostico, xlab = "Anio", ylab = "Tasa", main = "Pronostico de Tasa")
 
 **Alternativa 1 - Análisis de Residuos**
 
-```{r echo=FALSE}
+```{r}
 
 # Análisis de Residuos Alternativa 1
 
@@ -554,7 +554,7 @@ Por su parte, en la gráfica se evidencia un patrón en que los residuos tienen 
 
 **Alternativa 1 - Análisis de volatilidad utilizando Garch**
 
-```{r echo=FALSE}
+```{r}
 
 # Análisis de volatilidad utilizando fGarch
 garch_model <- garch(residuos_diff, order = c(1, 1))
@@ -585,23 +585,23 @@ print(modelo_auto)
 El modelo ARIMA(1,1,2) se seleccionó como el mejor ajuste para differenced_data basado en los valores del AIC, AICc, y BIC. La inclusión de términos AR y MA sugiere que hay dependencias de corto plazo en la serie, pero el ajuste no es perfecto, dado el tamaño de los errores estándar y el valor de sigma^2. Si el objetivo es la predicción, este modelo podría ser una buena base, aunque podrían explorarse otros modelos o ajustes adicionales para mejorar la precisión.
 
 
+
+
 **Alternativa 2 - c(1, 1, 2) (1, 1, 0):**
 
 
-```{r echo=FALSE}
+```{r}
 
 # Ajuste del modelo ARIMA OPCIÓN 2
 modelo_arima2 <- Arima(differenced_data, order = c(1, 1, 2), seasonal = c(1, 1, 0))
 summary(modelo_arima2)
-
-
-```
-```{r}
 checkresiduals(modelo_arima2)
 
 # Pronosticar los próximos 72 períodos (6 años)
 pronostico2 <- forecast(modelo_arima2, h = 72)
 
+# Graficar el pronóstico con el eje x adecuado
+plot(pronostico2, xlab = "Anio", ylab = "Tasa", main = "Pronostico de Tasa")
 
 ```
 
@@ -626,7 +626,7 @@ el modelo ARIMA(1,1,2)(1,1,0) tiene coeficientes precisos para los diferentes co
 
 **Alternativa 2 - Análisis de residuos**
 
-```{r echo=FALSE}
+```{r}
 
 # Análisis de Residuos Alternativa 2
 
@@ -668,11 +668,10 @@ summary(garch_model2)
 
 En resumen, este modelo GARCH(1,1) parece adecuado para modelar la volatilidad de los residuos, aunque los residuos no sean normales.
 
-
 **Comparación de modelos**
 
 
-```{r echo=FALSE}
+```{r}
 
 # Comparar criterios estadísticos
 cat("Criterios estadísticos:\n")
@@ -729,7 +728,7 @@ acf(residuals(modelo_arima2), main = "ACF Residuos Modelo 2")
 par(mfrow = c(1, 1))
 plot(pronostico2, xlab = "Anio", ylab = "Tasa", main = "Comparacion de Pronosticos")
 lines(forecast(modelo_arima, h = 72)$mean, col = "blue", lty = 2)
-legend("topleft", legend = c("Modelo 1", "Modelo 2"), col = c("blue", "black"), lty = c(2, 1))
+legend("topleft", legend = c("Modelo 1", "Modelo 2"), col = c("blue", "red"), lty = c(2, 1))
 
 
 
@@ -762,7 +761,7 @@ Recuerde siempre verificar la eficiencia del modelo utilizando el valor MAPE (er
 
 Se observan la tendencia y los ciclos:
 
-```{r echo=FALSE}
+```{r}
 # Graficar solo líneas
 plot(data2$Anio, data2$Tasa, type = "l", main = "Grafico con Regresion", xlab = "Anio", ylab = "Tasa")
 
@@ -774,7 +773,7 @@ abline(modelo, col = "red")
 
 
 ```
-```{r echo=FALSE}
+```{r}
 
 # Graficar 
 ggplot(data2, aes(x = Mes, y = Anio, fill = Tasa)) +
@@ -789,7 +788,7 @@ ggplot(data2, aes(x = Mes, y = Anio, fill = Tasa)) +
 
 La gráfica sugiere una disminución en la tasa a lo largo del tiempo, con una estabilización en niveles bajos en los años recientes. Esto podría indicar una mejora en el fenómeno que se está midiendo con la "Tasa", aunque el contexto específico dependerá de qué represente exactamente esa variable en el análisis.
 
-```{r echo=FALSE}
+```{r}
 
 # serie_temporal <- ts(data2[["Tasa"]], start = c(min(data2$Anio), 1), frequency = 12)
 
@@ -803,7 +802,7 @@ print(cicle)
 
 
 
-```{r echo=FALSE}
+```{r}
 # boxplot(data2~cycle(data2))
 
 # Crear el boxplot por ciclo (mes) para observar la estacionalidad
@@ -816,7 +815,7 @@ boxplot(ts_data ~ cycle(ts_data),
 Aunque hay consistencia en la mediana y el rango intercuartílico de la tasa a lo largo de los meses, existen valores atípicos en la segunda mitad del año. Esto sugiere que, aunque la tasa general se mantiene estable, en algunos meses específicos ocurren eventos o circunstancias que resultan en tasas inusualmente altas.
 
 
-```{r echo=FALSE}
+```{r}
 # plot(log(airmiles), ylab='log(airmiles)', xlab='Anio', main='Logaritmo de la tasa')
 
 plot(data2$Anio, log(data2$Tasa), type = "l", 
@@ -833,7 +832,7 @@ Esto fue evidenciado en el ANÁLISIS EXPLORATORIO.
 
 ## Modelo Holt-Winter
 
-```{r echo=FALSE}
+```{r}
 # modelo_HW = HoltWinters(log(airmiles), seasonal = "additive")
 # plot(modelo_HW, main = 'Ajuste con Holt-Winters', xlab = 'Anio', ylab='log(airmiles)')
 
@@ -865,7 +864,6 @@ Beta (β = 0.2941339): Este es el parámetro de suavizado para el componente de 
 Gamma (γ = 1): Este es el parámetro de suavizado para el componente estacional. Un valor de γ = 1 sugiere que el modelo da completo peso a los componentes estacionales previos en la serie.
 
 
-
 ```{r}
 plot(fitted(modelo_HW), main='Descomposicion con HW', xlab='Anio', ylab='log(airmiles)')
 ```
@@ -885,7 +883,6 @@ El modelo Holt-Winters parece ajustarse adecuadamente a la serie, capturando tan
 pred = predict(modelo_HW, 4, prediction.interval = TRUE)
 pred
 ```
-Con lo anterior, se evidencia una tedencia ascendente en las predicciones para los primeros 4 meses del 2025. De igual forma, se observa un incremento en la incertidumbre a medida que van pasando los meses. 
 
 ```{r}
 plot(modelo_HW, pred)
@@ -896,53 +893,59 @@ plot(modelo_HW, pred)
 ## Metodología Box Jenkins
 
 
-Dentro de los pasos a seguir, tenemos
+Dentro de los pasos a seguir, tenemos:
 
-Visualizar la serie.
-Transformarla en estacionaria.
-Graficar ACF - PACF, escoger los parámetros.
-Construir el modelo.
-Hacer predicción.
 
+1. Visualizar la serie.
+
+2. Transformarla en estacionaria.
+
+3. Graficar ACF - PACF, escoger los parámetros.
+
+4. Construir el modelo ARIMA.
+
+5. Hacer la predicción.
+
+
+Los pasos anteriores ya habían sido previamente incorporados en instancias anteriores del análisis bajo otros modelo o metodologías, sin embargo, para fines de aplicar el método Box Jenkins realizaremos nuevamente el proceso y procedemos a calcular el punto de cambio de la media de la serie de tiempo inicial:
 
 ```{r}
-
-#PASOS DEL DOCUMENTO DE LA PROFE
 
 # Detectar punto de cambio en la media 
 mval <- cpt.mean(ts_data, method = "AMOC")
 cpts(mval)
 
-
 ```
-Sobre la serie original se encuentran 276 puntos de cambio de media.
+Podemos identificar que sobre la serie original se encuentran 276 puntos de cambio de media.
 
 
 ```{r}
 
 # Graficar la serie con el punto de cambio resaltado
-plot(mval, type = "l", cpt.col = "blue", xlab = "Índice de Tiempo", cpt.width = 4, 
+plot(mval, type = "l", cpt.col = "blue", xlab = "Indice de Tiempo", cpt.width = 4, 
      main = "Punto de Cambio en la Media")
 
 ```
 
+Procedemos con el cálculo de la cantidad de diferenciaciones requeridas para hacer la serie estacionaria,en términos de media. Este análisis es crucial dentro del marco de la metodología Box-Jenkins, ya que el modelo ARIMA requiere que la serie sea estacionaria. Se observa que se requieren 2 diferenciaciones: 
 
 ```{r}
-
 
 ndiffs(ts_data)
+differenced_data2 <- diff(differenced_data) #se genera la segunda diferenciación sobre differenced_data la cual ya era una diferenciación de la serie original ts_data.
 
 ```
 
+Al correr nuevamente el código de punto de cambio de media (con **AMOC**)sobre la serie ya diferenciada 2 veces, el resultado es 0, indicando que no se ha detectado ningún cambio significativo en la media de dicha serie.
+
+Esto se debe a que al diferenciar la serie, se eliminan componentes como tendencia y cambios en la media, lo que puede hacer que la serie parezca más "estable" en términos de media.
+
+
+Incluso probando el método de cambio **PELT**, que es más flexible y busca múltiples puntos de cambio, el resultado sobre la serie diferenciado es 0, indicando que no se detectaron puntos de cambio significativos en la media de la serie de tiempo.
+
 ```{r}
-differenced_data2 <- diff(differenced_data)
-```
 
-
-
-```{r}
-
-# Detectar punto de cambio en la media 
+# Detectar punto de cambio en la media con AMOC
 mval <- cpt.mean(differenced_data2, method = "AMOC")
 cpts(mval)
 
@@ -952,21 +955,18 @@ cpts(mval_varios)
 
 ```
 
-Al correr el código sobre la serie ya diferenciada el resultado es 0, indicando que no se ha detectado ningún cambio significativo en la media de la serie.
-Esto se debe a que al diferenciar la serie, se eliminan componentes como tendencia y cambios en la media, lo que puede hacer que la serie parezca más "estable" en términos de media.
-
-Incluso probando el método de cambio PELT, que es más flexible y busca múltiples puntos de cambio, el resultado sobre la serie diferenciado es 0, indicando que no se detectaron puntos de cambio significativos en la media de la serie de tiempo.
+A continuación usarmos la función **tso** para identificar valores atípicos en la serie de tiempo diferenciada (2 veces):
 
 
+```{r}
 
-```{r echo=FALSE}
 
 # Convertir differenced_data2 a un objeto de serie de tiempo con frecuencia 12 (pq la serie es mensual. 1 es si es diaria)
 
 dat.ts <- ts(differenced_data2, frequency = 12)
 
 # Detectar outliers en la serie diferenciada
-data.ts.outliers <- tso(dat.ts)
+data.ts.outliers <- tso(dat.ts, maxit.iloop = 50, maxit.oloop = 10)
 
 # Mostrar los resultados de los outliers detectados
 print(data.ts.outliers)
@@ -974,23 +974,135 @@ plot(data.ts.outliers)
 
 ```
 
+* **Análisis de outliers:**
+
+El análisis de outliers usa un modelo ARIMA para ajustar la serie original y detectar los puntos atípicos. En este caso, el modelo identificado es un ARIMA(1,0,1), lo que indica:
+
+AR(1): Existe una correlación significativa con el valor inmediatamente anterior.
+MA(1): Hay un efecto de ruido blanco ajustado con una media móvil de orden 1.
+Diferenciación (0): La serie no fue diferenciada adicionalmente.
+
+El modelo incluye los efectos de los outliers y ajusta la serie eliminando estas anomalías para capturar patrones más consistentes.
+
+
+* **Eventos específicos en las fechas de los outliers:**
+
+LS183 y LS190 (16to año, febrero y octubre) indican eventos que cambiaron el nivel de la serie. Esto puede ser consecuencia de eventos externos como políticas, cambios económicos o errores de registro.
+Los cambios temporales (e.g., TC297) reflejan eventos transitorios.
+
+Efectos significativos: LS305 (26:05) y TC297 (25:09) tienen impactos muy fuertes y requeriría investigarse a profundidad para identificar causas específicas.
+
+
+---
+
+* **Gráfico**
+
+En la parte superior del gráfico se observan los puntos rojos que identifica dónde se encuentran los outliers. La línea azul muestra la serie original, mientras que la gris es la ajustada (sin los efectos de los outliers).
+
+En la parte inferior del gráfico se muestra la magnitud de los impactos de cada outlier en la serie.
+
+---
+
+Se procede a aplicar el test de Dickey Fuller sobre la serie doblemente diferenciada:
+
+```{r}
+
+adf.test(differenced_data2)
+
+```
+
+Se procede a aplicar análisis ACF y PACF sobre la serie doblemente diferenciada:
+
+```{r}
+# Graficar ACF y PACF
+par(mfrow = c(1, 2)) # Configurar para dos gráficos lado a lado
+acf(differenced_data2, main = "Autocorrelacion (ACF)")
+pacf(differenced_data2, main = "Autocorrelacion Parcial (PACF)")
+
+```
+
+* **ACF (Autocorrelación):**
+Observamos un rezago significativo en el primer lag (1), que sobresale de los límites de confianza. Esto sugiere un componente MA(1) (promedio móvil de orden 1). A partir del segundo rezago, las autocorrelaciones caen rápidamente, lo que refuerza la hipótesis de un modelo MA de bajo orden.
+
+
+* **PACF (Autocorrelación Parcial):**
+El PACF muestra un rezago significativo en el primer lag (1), y los rezagos siguientes se reducen gradualmente. Esto indica que podría haber un componente AR(1) (autoregresivo de orden 1). Los rezagos subsiguientes no parecen ser significativos, lo que también respalda la hipótesis de un modelo AR de bajo orden.
+
+
 
 
 ```{r}
 
+modelo_autoarima <- auto.arima(differenced_data2, seasonal = FALSE)
 
-# Ajustar un modelo lineal a la serie diferenciada o a la original si ya es estacionaria
-modelo_ajustado <- tslm(differenced_data2 ~ trend)
-summary(modelo_ajustado)
+# Resumen del modelo ajustado
+summary(modelo_autoarima)
 
-#Graficar el modelo y los residuos para analizar el ajuste
-plot(differenced_data2, main="Serie Diferenciada (si fue necesario) y Modelo Lineal Ajustado", ylab="Valor", xlab="Tiempo")
-lines(fitted(modelo_ajustado), col="red")
+# Graficar el ajuste del modelo
+plot(forecast(modelo_autoarima), main = "Pronostico con auto.arima")
 
 # Análisis de residuos
-checkresiduals(modelo_ajustado)
+checkresiduals(modelo_autoarima)
 
 ```
+
+* **Modelo Ajustado: ARIMA(1,0,2):**
+
+El modelo seleccionado por auto.arima es un ARIMA(1,0,2) sin estacionalidad.
+
+
+- p = 1: Un término autoregresivo.
+- d = 0: No se aplicó diferenciación adicional porque la serie ya es estacionaria.
+- q = 2: Dos términos de media móvil.
+- seasonal = FALSE: No se incluyeron componentes estacionales, lo cual parece adecuado dado el comportamiento de la serie diferenciada.
+
+
+* **Gráfica del Pronóstico:**
+
+La línea azul representa el pronóstico central. Las bandas grises representan los intervalos de confianza del 80% y 95%. Dado que las bandas se ensanchan a medida que avanzan los períodos, esto refleja un aumento en la incertidumbre del pronóstico.
+
+
+* **Análisis de Residuos (checkresiduals)**
+
+- En este caso, los residuos no presentan una tendencia obvia ni autocorrelación fuerte, lo cual es un buen indicador.
+
+- Dado que la mayoría de los puntos caen dentro de los límites de significancia (aproximadamente un nivel de confianza del 95%), no parece haber autocorrelación significativa, lo que indica que el modelo captura adecuadamente las dependencias temporales.
+
+- El histograma muestra una distribución aproximadamente normal con una media cercana a cero, lo cual es importante para validar la aplicabilidad del modelo ARIMA.
+
+* **Prueba de Ljung-Box (p-valor: 0.3103)**
+
+Este valor es mayor que 0.05, lo que significa que no podemos rechazar la hipótesis nula, es decir que no hay evidencia de autocorrelación en los residuos, lo cual es un indicador de que el modelo ARIMA ajusta bien la serie.
+
+
+
+---
+
+* **Pronóstico**
+
+```{r}
+
+# Generar pronósticos para los próximos 12 períodos
+horizonte <- 12
+pronostico <- forecast(modelo_autoarima, h = horizonte)
+
+# Convertir el pronóstico en una tabla (data frame)
+tabla_pronostico <- data.frame(
+  Fecha = seq(from = as.Date("2024-11-01"), by = "month", length.out = horizonte),  # Fechas desde noviembre 2024
+  Pronostico = as.numeric(pronostico$mean),           # Valores pronosticados
+  Limite_Inferior_80 = as.numeric(pronostico$lower[, 1]),  # Límite inferior 80%
+  Limite_Superior_80 = as.numeric(pronostico$upper[, 1]),  # Límite superior 80%
+  Limite_Inferior_95 = as.numeric(pronostico$lower[, 2]),  # Límite inferior 95%
+  Limite_Superior_95 = as.numeric(pronostico$upper[, 2])   # Límite superior 95%
+)
+
+# Mostrar la tabla
+print(tabla_pronostico)
+
+
+```
+
+Es importante considerar que los datos del pronóstico están en escala pues la serie tiene 2 diferenciaciones.
 
 
 
