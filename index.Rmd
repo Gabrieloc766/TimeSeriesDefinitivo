@@ -892,7 +892,6 @@ plot(modelo_HW, pred)
 
 ## Metodología Box Jenkins
 
-
 Dentro de los pasos a seguir, tenemos:
 
 
@@ -993,7 +992,6 @@ Los cambios temporales (e.g., TC297) reflejan eventos transitorios.
 Efectos significativos: LS305 (26:05) y TC297 (25:09) tienen impactos muy fuertes y requeriría investigarse a profundidad para identificar causas específicas.
 
 
----
 
 * **Gráfico**
 
@@ -1001,7 +999,7 @@ En la parte superior del gráfico se observan los puntos rojos que identifica d�
 
 En la parte inferior del gráfico se muestra la magnitud de los impactos de cada outlier en la serie.
 
----
+
 
 Se procede a aplicar el test de Dickey Fuller sobre la serie doblemente diferenciada:
 
@@ -1010,6 +1008,8 @@ Se procede a aplicar el test de Dickey Fuller sobre la serie doblemente diferenc
 adf.test(differenced_data2)
 
 ```
+
+
 
 Se procede a aplicar análisis ACF y PACF sobre la serie doblemente diferenciada:
 
@@ -1027,6 +1027,7 @@ Observamos un rezago significativo en el primer lag (1), que sobresale de los l�
 
 * **PACF (Autocorrelación Parcial):**
 El PACF muestra un rezago significativo en el primer lag (1), y los rezagos siguientes se reducen gradualmente. Esto indica que podría haber un componente AR(1) (autoregresivo de orden 1). Los rezagos subsiguientes no parecen ser significativos, lo que también respalda la hipótesis de un modelo AR de bajo orden.
+
 
 
 
@@ -1075,9 +1076,6 @@ La línea azul representa el pronóstico central. Las bandas grises representan 
 Este valor es mayor que 0.05, lo que significa que no podemos rechazar la hipótesis nula, es decir que no hay evidencia de autocorrelación en los residuos, lo cual es un indicador de que el modelo ARIMA ajusta bien la serie.
 
 
-
----
-
 * **Pronóstico**
 
 ```{r}
@@ -1105,7 +1103,93 @@ print(tabla_pronostico)
 Es importante considerar que los datos del pronóstico están en escala pues la serie tiene 2 diferenciaciones.
 
 
+## Modelo Prophet
+
+Para trabajar este modelo, partimos de la data original pues el modelo Prophet no requiere que la serie  sea diferenciada previamente porque internamente utiliza una combinación de métodos que manejan las tendencias y estacionalidades de manera explícita, evitando la necesidad de transformar la serie para hacerla estacionaria, como se hace en modelos como ARIMA. 
+
+
+```{r echo=FALSE, warning=FALSE}
+
+data3 <- data
+
+data3 <- data3 %>%
+  arrange(Fecha)  # Ordena las fechas
+
+
+data3$Fecha <- as.Date(data3$Fecha, format = "%Y-%m-%d")
 
 
 
 
+# Renombrar las columnas para prophet
+prophet_data <- data.frame(
+  ds = data3$Fecha,  # Fecha en la columna 'ds'
+  y = data3$Tasa  # La columna 'Tasa' en 'y'
+)
+
+# Crear y ajustar el modelo
+model <- prophet(prophet_data)
+
+# Crear un DataFrame para 6 meses hacia adelante sin incluir las fechas históricas
+future <- make_future_dataframe(model, periods = 6, freq = "month", include_history = FALSE)
+
+# Generar las predicciones
+forecast <- predict(model, future)
+
+# Mostrar las primeras filas de las predicciones
+head(forecast[, c("ds", "yhat", "yhat_lower", "yhat_upper")])
+
+```
+
+
+* Valores centrales **(yhat)** Son las predicciones para la variable Tasa, desde noviembre de 2024 hasta abril de 2025. Por ejemplo, para noviembre de 2024, se predice que la tasa será de aproximadamente 10.03%; los valores aumentan ligeramente hacia principios de 2025, lo que podría indicar una tendencia al alza.
+
+
+* Los intervalos de confianza **(yhat_lower y yhat_upper)**, indican la incertidumbre asociada a cada predicción.
+Por ejemplo, para noviembre de 2024, el modelo predice que la tasa podrá oscilar entre 6.71 y 13.31 con un nivel de confianza alto. Dado que los intervalos son amplios, sugiere que hay incertidumbre considerable en las proyecciones a futuro (esto puede originarse por una alta volatilidad en los datos históricos).
+
+
+* Se evidencia también que las predicciones para fechas más cercanas, como noviembre y diciembre de 2024, tienen menor incertidumbre (IC más estrecho) en comparación con fechas más lejanas, como marzo y abril de 2025. Esto es esperado porque la precisión del modelo suele disminuir con el tiempo.
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+# Graficar predicciones
+plot(model, forecast)
+
+```
+
+* Los puntos negros representan los datos históricos de la serie temporal. La gráfica muestra una tendencia con picos y valles notables, lo que podría indicar una serie con alta variabilidad (esto sustenta lo mencionado anteriormente) y posiblemente algún patrón cíclico o estacionalidad.
+
+* En la parte derecha de la gráfica, se observa una línea azul que representa la predicción del modelo para el futuro cercano.
+
+* Las áreas sombreadas en azul alrededor de las predicciones representan los intervalos de confianza del modelo, que indican el rango dentro del cual es más probable que se encuentren los valores reales. Estos intervalos son más amplios en la predicción debido a la incertidumbre inherente a los modelos predictivos.
+
+* El modelo parece ajustarse bien a los datos históricos y proporciona predicciones con una incertidumbre razonable. Se podría inferir que los valores futuros tienen una probabilidad de mantenerse en el rango predicho, sujeto a factores externos.
+
+
+
+```{r echo=FALSE, warning=FALSE}
+
+
+# Graficar los componentes del modelo
+prophet_plot_components(model, forecast)
+
+
+```
+
+Esta gráfica muestra los componentes del modelo generado con Prophet, descomponiendo la serie temporal en tendencia (trend) y estacionalidad anual (yearly).
+
+* **Tendencia:** El gráfico muestra cómo evoluciona la tendencia general a lo largo del tiempo (noviembre a abril).
+Se observa un incremento gradual en los valores a medida que avanza el tiempo. Esto indica una tendencia positiva sostenida en la serie temporal, lo que puede implicar crecimiento o recuperación en el fenómeno estudiado.
+
+La banda sombreada alrededor de la línea representa el intervalo de confianza del modelo, indicando la incertidumbre asociada a las predicciones. En este caso, la incertidumbre es baja, ya que la banda es estrecha.
+
+
+* **Estacionalidad anual:** Este gráfico captura patrones repetitivos que ocurren dentro de un año.
+Se observan picos y valles a lo largo del año, lo que sugiere que el fenómeno presenta una fuerte estacionalidad.
+
+Los picos indican que los valores tienden a ser más altos en ese mes, mientras que los valles muestran que los valores disminuyen en ese período.Entre julio y octubre, se observa una fluctuación más moderada.
+
+* En resumen, el modelo identifica una combinación de una tendencia creciente y un patrón de estacionalidad anual, lo que es clave para entender y predecir el comportamiento del fenómeno a futuro.

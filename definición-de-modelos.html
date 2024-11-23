@@ -161,6 +161,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#algoritmo-de-holt-winter"><i class="fa fa-check"></i><b>2.2</b> Algoritmo de Holt Winter</a></li>
 <li class="chapter" data-level="2.3" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-holt-winter"><i class="fa fa-check"></i><b>2.3</b> Modelo Holt-Winter</a></li>
 <li class="chapter" data-level="2.4" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#metodología-box-jenkins"><i class="fa fa-check"></i><b>2.4</b> Metodología Box Jenkins</a></li>
+<li class="chapter" data-level="2.5" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-prophet"><i class="fa fa-check"></i><b>2.5</b> Modelo Prophet</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
@@ -833,13 +834,11 @@ Diferenciación (0): La serie no fue diferenciada adicionalmente.</p>
 <p>LS183 y LS190 (16to año, febrero y octubre) indican eventos que cambiaron el nivel de la serie. Esto puede ser consecuencia de eventos externos como políticas, cambios económicos o errores de registro.
 Los cambios temporales (e.g., TC297) reflejan eventos transitorios.</p>
 <p>Efectos significativos: LS305 (26:05) y TC297 (25:09) tienen impactos muy fuertes y requeriría investigarse a profundidad para identificar causas específicas.</p>
-<hr />
 <ul>
 <li><strong>Gráfico</strong></li>
 </ul>
 <p>En la parte superior del gráfico se observan los puntos rojos que identifica dónde se encuentran los outliers. La línea azul muestra la serie original, mientras que la gris es la ajustada (sin los efectos de los outliers).</p>
 <p>En la parte inferior del gráfico se muestra la magnitud de los impactos de cada outlier en la serie.</p>
-<hr />
 <p>Se procede a aplicar el test de Dickey Fuller sobre la serie doblemente diferenciada:</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="definición-de-modelos.html#cb113-1" tabindex="-1"></a><span class="fu">adf.test</span>(differenced_data2)</span></code></pre></div>
 <pre><code>## Warning in adf.test(differenced_data2): p-value smaller than printed p-value</code></pre>
@@ -912,7 +911,6 @@ El PACF muestra un rezago significativo en el primer lag (1), y los rezagos sigu
 <li><p><strong>Prueba de Ljung-Box (p-valor: 0.3103)</strong></p></li>
 </ul>
 <p>Este valor es mayor que 0.05, lo que significa que no podemos rechazar la hipótesis nula, es decir que no hay evidencia de autocorrelación en los residuos, lo cual es un indicador de que el modelo ARIMA ajusta bien la serie.</p>
-<hr />
 <ul>
 <li><strong>Pronóstico</strong></li>
 </ul>
@@ -959,6 +957,47 @@ El PACF muestra un rezago significativo en el primer lag (1), y los rezagos sigu
 ## 11         -0.9472582          0.9469732
 ## 12         -0.9470308          0.9472006</code></pre>
 <p>Es importante considerar que los datos del pronóstico están en escala pues la serie tiene 2 diferenciaciones.</p>
+</div>
+<div id="modelo-prophet" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Modelo Prophet<a href="definición-de-modelos.html#modelo-prophet" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Para trabajar este modelo, partimos de la data original pues el modelo Prophet no requiere que la serie sea diferenciada previamente porque internamente utiliza una combinación de métodos que manejan las tendencias y estacionalidades de manera explícita, evitando la necesidad de transformar la serie para hacerla estacionaria, como se hace en modelos como ARIMA.</p>
+<pre><code>## Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<pre><code>##           ds     yhat yhat_lower yhat_upper
+## 1 2024-11-01 10.02613   6.698225   13.37571
+## 2 2024-12-01 10.08323   6.899669   13.49181
+## 3 2025-01-01 10.22743   6.982089   13.44419
+## 4 2025-02-01 10.30409   7.182156   13.58882
+## 5 2025-03-01 10.71855   7.479548   14.02244
+## 6 2025-04-01 10.50483   7.262701   13.72797</code></pre>
+<ul>
+<li><p>Valores centrales <strong>(yhat)</strong> Son las predicciones para la variable Tasa, desde noviembre de 2024 hasta abril de 2025. Por ejemplo, para noviembre de 2024, se predice que la tasa será de aproximadamente 10.03%; los valores aumentan ligeramente hacia principios de 2025, lo que podría indicar una tendencia al alza.</p></li>
+<li><p>Los intervalos de confianza <strong>(yhat_lower y yhat_upper)</strong>, indican la incertidumbre asociada a cada predicción.
+Por ejemplo, para noviembre de 2024, el modelo predice que la tasa podrá oscilar entre 6.71 y 13.31 con un nivel de confianza alto. Dado que los intervalos son amplios, sugiere que hay incertidumbre considerable en las proyecciones a futuro (esto puede originarse por una alta volatilidad en los datos históricos).</p></li>
+<li><p>Se evidencia también que las predicciones para fechas más cercanas, como noviembre y diciembre de 2024, tienen menor incertidumbre (IC más estrecho) en comparación con fechas más lejanas, como marzo y abril de 2025. Esto es esperado porque la precisión del modelo suele disminuir con el tiempo.</p></li>
+</ul>
+<p><img src="index_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<ul>
+<li><p>Los puntos negros representan los datos históricos de la serie temporal. La gráfica muestra una tendencia con picos y valles notables, lo que podría indicar una serie con alta variabilidad (esto sustenta lo mencionado anteriormente) y posiblemente algún patrón cíclico o estacionalidad.</p></li>
+<li><p>En la parte derecha de la gráfica, se observa una línea azul que representa la predicción del modelo para el futuro cercano.</p></li>
+<li><p>Las áreas sombreadas en azul alrededor de las predicciones representan los intervalos de confianza del modelo, que indican el rango dentro del cual es más probable que se encuentren los valores reales. Estos intervalos son más amplios en la predicción debido a la incertidumbre inherente a los modelos predictivos.</p></li>
+<li><p>El modelo parece ajustarse bien a los datos históricos y proporciona predicciones con una incertidumbre razonable. Se podría inferir que los valores futuros tienen una probabilidad de mantenerse en el rango predicho, sujeto a factores externos.</p></li>
+</ul>
+<p><img src="index_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p>Esta gráfica muestra los componentes del modelo generado con Prophet, descomponiendo la serie temporal en tendencia (trend) y estacionalidad anual (yearly).</p>
+<ul>
+<li><strong>Tendencia:</strong> El gráfico muestra cómo evoluciona la tendencia general a lo largo del tiempo (noviembre a abril).
+Se observa un incremento gradual en los valores a medida que avanza el tiempo. Esto indica una tendencia positiva sostenida en la serie temporal, lo que puede implicar crecimiento o recuperación en el fenómeno estudiado.</li>
+</ul>
+<p>La banda sombreada alrededor de la línea representa el intervalo de confianza del modelo, indicando la incertidumbre asociada a las predicciones. En este caso, la incertidumbre es baja, ya que la banda es estrecha.</p>
+<ul>
+<li><strong>Estacionalidad anual:</strong> Este gráfico captura patrones repetitivos que ocurren dentro de un año.
+Se observan picos y valles a lo largo del año, lo que sugiere que el fenómeno presenta una fuerte estacionalidad.</li>
+</ul>
+<p>Los picos indican que los valores tienden a ser más altos en ese mes, mientras que los valles muestran que los valores disminuyen en ese período.Entre julio y octubre, se observa una fluctuación más moderada.</p>
+<ul>
+<li>En resumen, el modelo identifica una combinación de una tendencia creciente y un patrón de estacionalidad anual, lo que es clave para entender y predecir el comportamiento del fenómeno a futuro.</li>
+</ul>
 </div>
 </div>
             </section>
