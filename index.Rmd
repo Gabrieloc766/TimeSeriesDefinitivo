@@ -510,7 +510,7 @@ A continuación se probarán dos alternativas de modelo ARIMA, de acuerdo con lo
 
 * Componentes AR y MA (p y q): Dado que p y q determinan la cantidad de términos autoregresivos y de promedio móvil, conviene probar con valores más altos para q y ajustar p de acuerdo con la correlación en los residuos. Esto puede ayudar a mejorar la precisión del modelo y su capacidad predictiva.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Ajuste del modelo ARIMA - ALTERNATIVA 1
 modelo_arima <- Arima(differenced_data, order = c(1, 2, 3), seasonal = c(1, 1, 1))
@@ -525,7 +525,7 @@ checkresiduals(modelo_arima)
 pronostico <- forecast(modelo_arima, h = 72)
 
 # Graficar el pronóstico con el eje x adecuado
-plot(pronostico, xlab = "Anio", ylab = "Tasa", main = "Pronostico de Tasa")
+plot(pronostico, xlab = "Año", ylab = "Tasa", main = "Pronóstico de Tasa")
 
 ```
 
@@ -553,9 +553,7 @@ plot(pronostico, xlab = "Anio", ylab = "Tasa", main = "Pronostico de Tasa")
 
 **Alternativa 1 - Análisis de Residuos**
 
-```{r}
-
-# Análisis de Residuos Alternativa 1
+```{r echo=FALSE, warning=FALSE}
 
 # Normal QQ Plot de los residuos
 residuos_diff <- residuals(modelo_arima)
@@ -566,6 +564,7 @@ qqline(residuos_diff, col = "red")
 # Realizar el test de normalidad de Shapiro-Wilk
 shapiro_test <- shapiro.test(residuos_diff)
 print(shapiro_test)
+
 
 
 ```
@@ -579,11 +578,12 @@ Por su parte, en la gráfica se evidencia un patrón en que los residuos tienen 
 
 **Alternativa 1 - Análisis de volatilidad utilizando Garch**
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Análisis de volatilidad utilizando fGarch
 garch_model <- garch(residuos_diff, order = c(1, 1))
 summary(garch_model)
+
 
 
 ```
@@ -599,12 +599,10 @@ Este modelo GARCH(1,1) es útil para capturar los cambios en la volatilidad de l
 
 **Auto Arima para identificar la Alternativa 2**
 
-```{r}
-
+```{r echo=FALSE, warning=FALSE}
 # Aplicar auto.arima para determinar los parámetros adecuados, incluyendo las diferenciaciones
 modelo_auto <- auto.arima(differenced_data)
 print(modelo_auto)
-
 ```
 
 El modelo ARIMA(1,1,2) se seleccionó como el mejor ajuste para differenced_data basado en los valores del AIC, AICc, y BIC. La inclusión de términos AR y MA sugiere que hay dependencias de corto plazo en la serie, pero el ajuste no es perfecto, dado el tamaño de los errores estándar y el valor de sigma^2. Si el objetivo es la predicción, este modelo podría ser una buena base, aunque podrían explorarse otros modelos o ajustes adicionales para mejorar la precisión.
@@ -615,7 +613,7 @@ El modelo ARIMA(1,1,2) se seleccionó como el mejor ajuste para differenced_data
 **Alternativa 2 - c(1, 1, 2) (1, 1, 0):**
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Ajuste del modelo ARIMA OPCIÓN 2
 modelo_arima2 <- Arima(differenced_data, order = c(1, 1, 2), seasonal = c(1, 1, 0))
@@ -626,7 +624,7 @@ checkresiduals(modelo_arima2)
 pronostico2 <- forecast(modelo_arima2, h = 72)
 
 # Graficar el pronóstico con el eje x adecuado
-plot(pronostico2, xlab = "Anio", ylab = "Tasa", main = "Pronostico de Tasa")
+plot(pronostico2, xlab = "Año", ylab = "Tasa", main = "Pronóstico de Tasa")
 
 ```
 
@@ -651,7 +649,7 @@ el modelo ARIMA(1,1,2)(1,1,0) tiene coeficientes precisos para los diferentes co
 
 **Alternativa 2 - Análisis de residuos**
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Análisis de Residuos Alternativa 2
 
@@ -676,11 +674,12 @@ En cuanto a la gráfica también refleja la No normalidad. La desviación de los
 
 **Alternativa 2 - Análisis de volatilidad fGarch**
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Análisis de volatilidad utilizando fGarch
 garch_model2 <- garch(residuos_diff2, order = c(1, 1))
 summary(garch_model2)
+
 
 
 ```
@@ -696,7 +695,7 @@ En resumen, este modelo GARCH(1,1) parece adecuado para modelar la volatilidad d
 **Comparación de modelos**
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Comparar criterios estadísticos
 cat("Criterios estadísticos:\n")
@@ -751,7 +750,7 @@ acf(residuals(modelo_arima2), main = "ACF Residuos Modelo 2")
 
 # Graficar y comparar pronósticos
 par(mfrow = c(1, 1))
-plot(pronostico2, xlab = "Anio", ylab = "Tasa", main = "Comparacion de Pronosticos")
+plot(pronostico2, xlab = "Año", ylab = "Tasa", main = "Comparación de Pronósticos")
 lines(forecast(modelo_arima, h = 72)$mean, col = "blue", lty = 2)
 legend("topleft", legend = c("Modelo 1", "Modelo 2"), col = c("blue", "red"), lty = c(2, 1))
 
@@ -786,7 +785,16 @@ Recuerde siempre verificar la eficiencia del modelo utilizando el valor MAPE (er
 
 Se observan la tendencia y los ciclos:
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
+data2 = data
+
+data2 <- data2 %>%
+  mutate(Fecha = as.Date(Fecha), Anio = year(Fecha), Mes = month(Fecha, label = TRUE, abbr = TRUE)) %>%
+  select(Anio, Mes, everything())
+
+head(data2)
+
+
 # Graficar solo líneas
 plot(data2$Anio, data2$Tasa, type = "l", main = "Grafico con Regresion", xlab = "Anio", ylab = "Tasa")
 
@@ -797,14 +805,15 @@ modelo <- lm(Tasa ~ Anio, data = data2)
 abline(modelo, col = "red")
 
 
+
 ```
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Graficar 
 ggplot(data2, aes(x = Mes, y = Anio, fill = Tasa)) +
   geom_tile() +  # Usar geom_tile para crear un gráfico de calor
   scale_fill_gradient(low = "white", high = "blue") +  # Colores del llenado
-  labs(title = "Tasa por Anio y Mes", x = "Mes", y = "Anio") +
+  labs(title = "Tasa por Año y Mes", x = "Mes", y = "Año") +
   theme_minimal()
 
 
@@ -813,8 +822,7 @@ ggplot(data2, aes(x = Mes, y = Anio, fill = Tasa)) +
 
 La gráfica sugiere una disminución en la tasa a lo largo del tiempo, con una estabilización en niveles bajos en los años recientes. Esto podría indicar una mejora en el fenómeno que se está midiendo con la "Tasa", aunque el contexto específico dependerá de qué represente exactamente esa variable en el análisis.
 
-```{r}
-
+```{r echo=FALSE, warning=FALSE}
 # serie_temporal <- ts(data2[["Tasa"]], start = c(min(data2$Anio), 1), frequency = 12)
 
 # Extraer el ciclo de la serie temporal
@@ -827,7 +835,7 @@ print(cicle)
 
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # boxplot(data2~cycle(data2))
 
 # Crear el boxplot por ciclo (mes) para observar la estacionalidad
@@ -840,11 +848,11 @@ boxplot(ts_data ~ cycle(ts_data),
 Aunque hay consistencia en la mediana y el rango intercuartílico de la tasa a lo largo de los meses, existen valores atípicos en la segunda mitad del año. Esto sugiere que, aunque la tasa general se mantiene estable, en algunos meses específicos ocurren eventos o circunstancias que resultan en tasas inusualmente altas.
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # plot(log(airmiles), ylab='log(airmiles)', xlab='Anio', main='Logaritmo de la tasa')
 
 plot(data2$Anio, log(data2$Tasa), type = "l", 
-     ylab = "Log(Tasa)", xlab = "Anio", 
+     ylab = "Log(Tasa)", xlab = "Año", 
      main = "Logaritmo de la Tasa a lo largo del Tiempo")
 ```
 
@@ -857,9 +865,11 @@ Esto fue evidenciado en el ANÁLISIS EXPLORATORIO.
 
 ## Modelo Holt-Winter
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # modelo_HW = HoltWinters(log(airmiles), seasonal = "additive")
 # plot(modelo_HW, main = 'Ajuste con Holt-Winters', xlab = 'Anio', ylab='log(airmiles)')
+# Crear la serie temporal correctamente
+ts_data <- ts(data2$Tasa, start = c(min(data2$Anio), min(data2$Mes)), frequency = 12)
 
 
 # Aplicar el modelo Holt-Winters a la serie temporal
@@ -889,7 +899,7 @@ Beta (β = 0.2941339): Este es el parámetro de suavizado para el componente de 
 Gamma (γ = 1): Este es el parámetro de suavizado para el componente estacional. Un valor de γ = 1 sugiere que el modelo da completo peso a los componentes estacionales previos en la serie.
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 plot(fitted(modelo_HW), main='Descomposicion con HW', xlab='Anio', ylab='log(airmiles)')
 ```
 
@@ -904,12 +914,12 @@ El modelo Holt-Winters parece ajustarse adecuadamente a la serie, capturando tan
 
 **Se predice el método Holt Winters**
 
-```{r}
-pred = predict(modelo_HW, 4, prediction.interval = TRUE)
+```{r echo=FALSE, warning=FALSE}
+pred = predict(modelo_HW, 6, prediction.interval = TRUE)
 pred
 ```
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 plot(modelo_HW, pred)
 ```
 
@@ -933,27 +943,29 @@ Dentro de los pasos a seguir, tenemos:
 
 Los pasos anteriores ya habían sido previamente incorporados en instancias anteriores del análisis bajo otros modelo o metodologías, sin embargo, para fines de aplicar el método Box Jenkins realizaremos nuevamente el proceso y procedemos a calcular el punto de cambio de la media de la serie de tiempo inicial:
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Detectar punto de cambio en la media 
 mval <- cpt.mean(ts_data, method = "AMOC")
 cpts(mval)
 
+
 ```
 Podemos identificar que sobre la serie original se encuentran 276 puntos de cambio de media.
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Graficar la serie con el punto de cambio resaltado
-plot(mval, type = "l", cpt.col = "blue", xlab = "Indice de Tiempo", cpt.width = 4, 
+plot(mval, type = "l", cpt.col = "blue", xlab = "Índice de Tiempo", cpt.width = 4, 
      main = "Punto de Cambio en la Media")
+
 
 ```
 
 Procedemos con el cálculo de la cantidad de diferenciaciones requeridas para hacer la serie estacionaria,en términos de media. Este análisis es crucial dentro del marco de la metodología Box-Jenkins, ya que el modelo ARIMA requiere que la serie sea estacionaria. Se observa que se requieren 2 diferenciaciones: 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 ndiffs(ts_data)
 differenced_data2 <- diff(differenced_data) #se genera la segunda diferenciación sobre differenced_data la cual ya era una diferenciación de la serie original ts_data.
@@ -967,7 +979,7 @@ Esto se debe a que al diferenciar la serie, se eliminan componentes como tendenc
 
 Incluso probando el método de cambio **PELT**, que es más flexible y busca múltiples puntos de cambio, el resultado sobre la serie diferenciado es 0, indicando que no se detectaron puntos de cambio significativos en la media de la serie de tiempo.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Detectar punto de cambio en la media con AMOC
 mval <- cpt.mean(differenced_data2, method = "AMOC")
@@ -977,12 +989,13 @@ cpts(mval)
 mval_varios <- cpt.mean(differenced_data2, method = "PELT") # Detecta múltiples cambios
 cpts(mval_varios)
 
+
 ```
 
 A continuación usarmos la función **tso** para identificar valores atípicos en la serie de tiempo diferenciada (2 veces):
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 
 # Convertir differenced_data2 a un objeto de serie de tiempo con frecuencia 12 (pq la serie es mensual. 1 es si es diaria)
@@ -1028,7 +1041,8 @@ En la parte inferior del gráfico se muestra la magnitud de los impactos de cada
 
 Se procede a aplicar el test de Dickey Fuller sobre la serie doblemente diferenciada:
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
+
 
 adf.test(differenced_data2)
 
@@ -1038,11 +1052,11 @@ adf.test(differenced_data2)
 
 Se procede a aplicar análisis ACF y PACF sobre la serie doblemente diferenciada:
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # Graficar ACF y PACF
 par(mfrow = c(1, 2)) # Configurar para dos gráficos lado a lado
-acf(differenced_data2, main = "Autocorrelacion (ACF)")
-pacf(differenced_data2, main = "Autocorrelacion Parcial (PACF)")
+acf(differenced_data2, main = "Autocorrelación (ACF)")
+pacf(differenced_data2, main = "Autocorrelación Parcial (PACF)")
 
 ```
 
@@ -1057,7 +1071,7 @@ El PACF muestra un rezago significativo en el primer lag (1), y los rezagos sigu
 
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 modelo_autoarima <- auto.arima(differenced_data2, seasonal = FALSE)
 
@@ -1065,10 +1079,11 @@ modelo_autoarima <- auto.arima(differenced_data2, seasonal = FALSE)
 summary(modelo_autoarima)
 
 # Graficar el ajuste del modelo
-plot(forecast(modelo_autoarima), main = "Pronostico con auto.arima")
+plot(forecast(modelo_autoarima), main = "Pronóstico con auto.arima")
 
 # Análisis de residuos
 checkresiduals(modelo_autoarima)
+
 
 ```
 
@@ -1103,10 +1118,10 @@ Este valor es mayor que 0.05, lo que significa que no podemos rechazar la hipót
 
 * **Pronóstico**
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Generar pronósticos para los próximos 12 períodos
-horizonte <- 12
+horizonte <- 6
 pronostico <- forecast(modelo_autoarima, h = horizonte)
 
 # Convertir el pronóstico en una tabla (data frame)
@@ -1123,9 +1138,34 @@ tabla_pronostico <- data.frame(
 print(tabla_pronostico)
 
 
+
 ```
 
-Es importante considerar que los datos del pronóstico están en escala pues la serie tiene 2 diferenciaciones.
+Es importante considerar que los datos del pronóstico están en escala pues la serie tiene 2 diferenciaciones, por tanto se procede a convertir a escala original:
+
+```{r echo=FALSE, warning=FALSE}
+# Últimos valores originales conocidos
+ultimo_valor_original <- tail(ts_data, 1)  # Último valor de la serie original
+ultimo_valor_diferenciado <- tail(differenced_data, 1)  # Último valor de la serie diferenciada una vez
+
+# Revertir la segunda diferenciación
+forecast_level1 <- cumsum(pronostico$mean) + rep(ultimo_valor_diferenciado, length(pronostico$mean))
+
+# Revertir la primera diferenciación
+forecast_final <- cumsum(forecast_level1) + rep(ultimo_valor_original, length(forecast_level1))
+
+# Crear tabla con los valores des-diferenciados
+tabla_pronostico_ARIMA_original <- data.frame(
+  Fecha = seq(from = as.Date("2024-11-01"), by = "month", length.out = horizonte),
+  Pronostico = forecast_final
+)
+
+# Mostrar resultados
+print(tabla_pronostico_ARIMA_original)
+
+
+
+```
 
 
 ## Modelo Prophet
@@ -1180,9 +1220,9 @@ Por ejemplo, para noviembre de 2024, el modelo predice que la tasa podrá oscila
 
 ```{r echo=FALSE, warning=FALSE}
 
+
 # Graficar predicciones
 plot(model, forecast)
-
 ```
 
 * Los puntos negros representan los datos históricos de la serie temporal. La gráfica muestra una tendencia con picos y valles notables, lo que podría indicar una serie con alta variabilidad (esto sustenta lo mencionado anteriormente) y posiblemente algún patrón cíclico o estacionalidad.
@@ -1228,7 +1268,9 @@ Los picos indican que los valores tienden a ser más altos en ese mes, mientras 
 
 A continuación vamos a normalizar la columna Tasa y dividir los datos en conjuntos de entrenamiento y prueba. 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
+
+data2 = data
 
 # Normalización de la columna 'Tasa' entre 0 y 1
 normalize <- function(x) {
@@ -1248,7 +1290,7 @@ test_data <- data2[-train_indices, ]
 
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # Calcular el origen de las fechas
 fecha_max <- as.Date("2024-10-01")  # Última fecha conocida
 dias_max <- 19905                  # Valor numérico de la última fecha
@@ -1258,6 +1300,7 @@ fecha_origen <- fecha_max - dias_max
 
 # Convertir la columna Fecha en formato Date
 test_data$Fecha <- as.Date(test_data$Fecha, origin = as.character(fecha_origen))
+
 
 
 ```
@@ -1274,7 +1317,7 @@ Para esto, se realiza el siguiente proceso:
 
 Los valores predichos por el modelo se encuentran en un rango cercano entre 11.79 y 13.31. Esto sugiere que el modelo ha aprendido un patrón en los datos de entrada y salida, y las predicciones son coherentes dentro de un rango esperado.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Preparar los datos de entrada y salida
 train_input <- as.matrix(train_data$Tasa_norm)
@@ -1322,7 +1365,7 @@ Al obtener un resultado de 0.9999664, y al ser un valor muy cercano a 1, se enti
 
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Evaluación
 actuals <- test_data$Tasa
@@ -1338,7 +1381,7 @@ Con el siuguiente código se realiza una predicción de valores futuros utilizan
 
 Teniendo en cuenta el resultado de Elman, se tendría un crecimiento gradual en la tasa,para los siguientes seis meses (de noviembre 2024 a abril 2025); pasando de 23.90% a 24.13% respectivamente.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Crear una secuencia de fechas futuras. 6 meses a partir de noviembre de 2024
 fechas_futuras <- seq(as.Date("2024-11-01"), by = "month", length.out = 6)
@@ -1386,7 +1429,7 @@ print(data_futuro_desnormalizado)
 
 A continuación se muestra la gráfica, en donde se puede visualizar la predicción de la tasa para los seis meses.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 
 ggplot(data_futuro_desnormalizado, aes(x = Fecha, y = Predicciones_Elman_Desnorm)) +
@@ -1397,14 +1440,12 @@ ggplot(data_futuro_desnormalizado, aes(x = Fecha, y = Predicciones_Elman_Desnorm
        y = "Predicción de Tasa") +
   theme_minimal()
 
-
 ```
 
+Integrar los datos con las predicciones pasadas
 
-A continuación se muestra una tabla con los datos reales y las predicciones realizadas por el modelo Elman, se evidencia un salto para la tasa entre los meses de octubre a noviembre del 2024.
 
-
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Verificar los nombres de las columnas en ambos dataframes
 colnames(data_futuro_desnormalizado)
@@ -1430,7 +1471,7 @@ head(data_completo, 12)
 
 A continuación se muestra el gráfico con los datos pasados así como con las predicciones:
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 ggplot(data_completo, aes(x = Fecha, y = Predicciones_Elman)) +
   geom_line(color = "blue") +
@@ -1453,7 +1494,8 @@ El modelo de red neuronal de tipo Jordan, permite captar patrones temporales y s
 El resultado de  0.9994467, muestra que el modelo es muy eficiente para predecir las tasas.
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
+
 # Crear y entrenar la red Jordan
 set.seed(123)
 jordan_model <- jordan(
@@ -1482,10 +1524,9 @@ head(predicciones_con_fechas_jordan)
 
 
 
-
 ```
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Evaluación
 print(cor(predictions_jordan_desnorm, actuals))  # Correlación entre predicciones y valores reales
@@ -1498,7 +1539,7 @@ print(cor(predictions_jordan_desnorm, actuals))  # Correlación entre prediccion
 
 Con el modelo Jordan, se muestra para las predicciones futuras una disminución de la tasa, pasando de 21.84% a 17.16% en seis meses.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # Crear una secuencia de fechas futuras (6 meses desde noviembre de 2024)
 fechas_futuras <- seq(as.Date("2024-11-01"), by = "month", length.out = 6)
 
@@ -1549,7 +1590,7 @@ print(data_futuro_jordan)
 
 ```
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 # Gráfico con las predicciones futuras para el modelo Jordan
 ggplot(data_futuro_jordan, aes(x = Fecha, y = Predicción_Jordan)) +
   geom_line(color = "blue") +
@@ -1560,13 +1601,15 @@ ggplot(data_futuro_jordan, aes(x = Fecha, y = Predicción_Jordan)) +
   theme_minimal()
 
 
+
 ```
 
 Similar al modelo Elman, también se evidencia un salto en la tasa, correspondiente a los meses de octubre a noviembre del 2024.
 
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
+
 
 
 # Verificar los nombres de las columnas en ambos dataframes
@@ -1589,10 +1632,12 @@ head(data_completo_jordan, 12)
 
 
 
+
+
 ```
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Graficar las predicciones pasadas y pronóstico futuro para el modelo Jordan
 ggplot(data_completo_jordan, aes(x = Fecha, y = Predicciones_Jordan)) +
@@ -1605,7 +1650,6 @@ ggplot(data_completo_jordan, aes(x = Fecha, y = Predicciones_Jordan)) +
 
 
 
-
 ```
 
 
@@ -1614,7 +1658,7 @@ ggplot(data_completo_jordan, aes(x = Fecha, y = Predicciones_Jordan)) +
 El resultado a continuacio´n muestra una comparación entre las predicciones generadas por los modelos anteriormente realizados: Elman y Jordan. Las predicciones de ambos modelos se acercan a los valores reales, aunque con algunas diferencias notables. Por ejemplo, en las fechas más recientes como octubre y septiembre de 2024, ambas predicciones (Elman y Jordan) están muy cerca de los valores reales (11.75), pero el modelo Elman presenta un ligero mejor ajuste con valores de 11.790453 y 11.789933, respectivamente, en comparación con los valores del modelo Jordan, que son 11.815554 y 11.799799. En fechas anteriores, como en diciembre de 2023, los dos modelos también muestran predicciones bastante cercanas entre sí, con ligeras variaciones, siendo el modelo Elman más cercano al valor real (13.300097 frente a 13.274618). A lo largo de las fechas más antiguas, ambas predicciones siguen una tendencia similar, pero con pequeñas diferencias, lo que sugiere que el modelo Elman tiende a ajustarse de manera más precisa a los datos reales en comparación con el modelo Jordan, aunque ambos modelos muestran un rendimiento aceptable en la mayoría de los casos.
 
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 
 # Crear un DataFrame con los resultados
 prediction_table <- data.frame(
@@ -1636,7 +1680,7 @@ print(prediction_table)
 
 A continuación, se visualiza una gráfica con las predicciones comparativas entre los modelos Elman y Jordan.
 
-```{r}
+```{r echo=FALSE, warning=FALSE}
 library(ggplot2)
 
 # Crear un DataFrame para comparar
@@ -1662,5 +1706,141 @@ ggplot(results, aes(x = Fecha)) +
 
 
 
+
+
 ```
+# **CONCLUSIONES FINALES**
+
+
+La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.
+
+Con el propósito de entender mejor el comportamiento histórico de la serie y de probar la capacidad predictiva de diversos modelos, se llevó a cabo un análisis exploratorio y se elaboraron los siguientes modelos proyectivos:
+
+* ARIMA (AutoRegressive Integrated Moving Average)
+* Holt-Winters (Descomposición de estacionalidad y suavizamiento exponencial)
+* Prophet (Modelo ajustable de tendencia y estacionalidad desarrollado por Meta)
+* Redes Neuronales (Elman y Jordan)
+
+El análisis se basó en datos mensuales desde 1999 hasta 2024, abarcando un periodo extenso que incluye diversas dinámicas económicas y cambios estructurales en el país.
+
+
+
+**Comparación Global de Modelos**
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+pronostico_hw = pred
+pronostico_arima = tabla_pronostico_ARIMA_original
+pronostico_pp = forecast
+pronostico_elm = data_futuro_desnormalizado
+pronostico_jrd = data_futuro_jordan
+
+
+
+if (is.matrix(pronostico_hw)) {
+  pronostico_hw <- as.data.frame(pronostico_hw)
+}
+
+fechas_hw <- seq(from = as.Date("2024-11-01"), by = "month", length.out = nrow(pronostico_hw))
+
+pronostico_hw <- data.frame(
+  Fecha = fechas_hw,          # Columna de fechas
+  Pronostico_hw = pronostico_hw[, "fit"]  # Valores ajustados desde la columna "fit"
+)
+
+
+  
+# Verificar si pronostico_pp es un dataframe
+if (is.data.frame(pronostico_pp)) {
+  # Extraer las fechas
+  fechas_pp <- pronostico_pp$ds
+  
+  # Crear el data.frame con las columnas necesarias
+  pronostico_pp <- data.frame(
+    Fecha = fechas_pp,               # Columna de fechas
+    Pronostico_pp = pronostico_pp$trend # Columna de pronóstico, que es el valor de la tendencia
+  )
+  
+}
+
+# print(pronostico_hw)
+# print(pronostico_arima)
+# print(pronostico_pp)
+# print(pronostico_elm)
+# print(pronostico_jrd)
+
+
+pronostico_pp$Fecha <- as.Date(pronostico_pp$Fecha)
+pronostico_hw$Fecha <- as.Date(pronostico_hw$Fecha)
+pronostico_arima$Fecha <- as.Date(pronostico_arima$Fecha)
+pronostico_elm$Fecha <- as.Date(pronostico_elm$Fecha)
+pronostico_jrd$Fecha <- as.Date(pronostico_jrd$Fecha)
+
+# Crear la tabla comparativa uniendo todas las predicciones
+tabla_comparativa <- pronostico_hw %>%
+  rename(Pronostico_hw = Pronostico_hw) %>%  # Ya está correcto, no es necesario cambiar
+  full_join(pronostico_arima %>% rename(Pronostico_arima = Pronostico), by = "Fecha") %>%
+  full_join(pronostico_pp %>% rename(Pronostico_pp = Pronostico_pp), by = "Fecha") %>%
+  full_join(pronostico_elm %>% rename(Predicciones_Elman = Predicciones_Elman), by = "Fecha") %>%
+  full_join(pronostico_jrd %>% rename(Predicciones_Jordan = Predicciones_Jordan), by = "Fecha")
+
+# Crear la columna 'Valor real' con los valores para los periodos de noviembre y diciembre de 2024
+valor_real <- rep(NA, nrow(tabla_comparativa))  # Inicializar la columna con NA
+
+# Asignar el valor 9.75 a las filas correspondientes a noviembre y diciembre de 2024
+valor_real[tabla_comparativa$Fecha == "2024-11-01"] <- 9.75
+valor_real[tabla_comparativa$Fecha == "2024-12-01"] <- 9.75
+
+# Añadir la columna 'Valor real' al inicio de la tabla comparativa
+tabla_comparativa <- tabla_comparativa %>%
+  mutate(Valor_real = valor_real) %>%
+  select(Fecha, Valor_real, everything())  # Reorganizar para poner 'Valor_real' al inicio
+
+
+
+print(tabla_comparativa)
+
+
+
+```
+
+
+```{r echo=FALSE, warning=FALSE}
+
+library(knitr)
+
+# Mostrar la tabla con kable
+kable(tabla_comparativa, format = "markdown", caption = "Tabla Comparativa de Pronósticos")
+
+
+```
+
+
+La variabilidad entre los modelos es notable. Mientras que Holt-Winters, ARIMA y Prophet sugieren un crecimiento, Elman y Jordan sugieren una disminución, lo que podría reflejar diferencias en los métodos y tipos de datos que cada uno de estos modelos utiliza. Esto sugiere que hay divergencias significativas en la naturaleza de los datos que estos modelos están capturando.
+
+En cuanto al ajuste, dado que se espera que la tasa se estabilice o disminuya (y esto se puede evidenciar en el comportamiento de noviembre y diciembre), los modelos Elman y Jordan podrían estar capturando la tendencia de manera más precisa.
+
+Se evidencia también que Prophet es el modelo más preciso en cuanto a la cercanía de sus predicciones respecto a los valores reales, esto sugiere que tiene un buen ajuste con los patrones de los datos actuales. Esto no significa necesariamente que siempre será el más preciso, pero en este caso parece estar capturando mejor las dinámicas subyacentes. Sin embargo, para asegurarse de su validez futura, es recomendable continuar evaluando su desempeño y ajustarlo si es necesario.
+
+
+En definitiva, el análisis realizado sobre la tasa de intervención del Banco de la República de Colombia ha demostrado que los diferentes modelos aplicados (ARIMA, Holt-Winters, Prophet y Redes Neuronales) tienen capacidades complementarias para capturar las dinámicas de esta serie temporal, cada uno con fortalezas específicas.
+
+De manera general, las Redes Neuronales, en especial la Red Elman, destacan por su habilidad para modelar relaciones complejas y no lineales en la serie. No obstante, modelos como Prophet son opciones igualmente válidas debido a su flexibilidad para incorporar eventos atípicos y su facilidad de configuración. 
+
+Tanto para los modelos estadísticos como para las redes neuronales, es crucial realizar una búsqueda sistemática de hiperparámetros para garantizar un ajuste óptimo, por ejemplo, en las Redes Neuronales, ajustar el número de neuronas en la capa oculta, variar la tasa de aprendizaje y los coeficientes de regularización. En el caso de Prophet, optimizar la configuración de estacionalidad y ajustar la sensibilidad a eventos atípicos o discontinuidades en la serie.
+
+También podría considerarse mejorar la capacidad predictiva mediante la incorporación de factores económicos adicionales como:
+
+* Inflación (IPC).
+* Tasas de cambio (peso frente al dólar).
+* Precios del petróleo, dado su impacto en la economía colombiana.
+* Indicadores internacionales como tasas de interés de la Reserva Federal (FED).
+
+
+También es pertinente realizar validaciones cruzadas para garantizar que los modelos no estén sobreajustados a datos históricos específicos.
+
+Finalmente, cualquiera sea la mejora que se pruebe, sin duda concluimos que en esta serie que tiene una alta volatilidad y susceptibilidad a variables del entorno, es importante simplificar la Serie Temporal, limitando el horizonte de datos a un periodo más reciente (por ejemplo, últimos 5 años) para enfocar el análisis en las condiciones económicas actuales y reducir la sensibilidad a ruidos históricos o dinámicas económicas que ya no son relevantes.
+
+
 
