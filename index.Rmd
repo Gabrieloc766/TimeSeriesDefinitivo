@@ -1709,8 +1709,7 @@ ggplot(results, aes(x = Fecha)) +
 
 
 ```
-# **CONCLUSIONES FINALES**
-
+# **Conclusiones Finales**
 
 La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.
 

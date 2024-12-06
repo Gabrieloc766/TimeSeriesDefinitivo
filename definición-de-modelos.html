@@ -702,12 +702,12 @@ El PACF muestra un rezago significativo en el primer lag (1), y los rezagos sigu
 <pre><code>## Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</code></pre>
 <pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
 <pre><code>##           ds     yhat yhat_lower yhat_upper
-## 1 2024-11-01 10.02613   6.763488   13.28206
-## 2 2024-12-01 10.08323   6.940024   13.10258
-## 3 2025-01-01 10.22743   6.926538   13.37279
-## 4 2025-02-01 10.30409   7.133600   13.40890
-## 5 2025-03-01 10.71855   7.726062   14.23350
-## 6 2025-04-01 10.50483   7.495179   13.59949</code></pre>
+## 1 2024-11-01 10.02613   6.974320   13.24940
+## 2 2024-12-01 10.08323   7.061934   13.39261
+## 3 2025-01-01 10.22743   7.039358   13.51272
+## 4 2025-02-01 10.30409   7.153986   13.31713
+## 5 2025-03-01 10.71855   7.401060   13.85401
+## 6 2025-04-01 10.50483   7.316521   13.59275</code></pre>
 <ul>
 <li><p>Valores centrales <strong>(yhat)</strong> Son las predicciones para la variable Tasa, desde noviembre de 2024 hasta abril de 2025. Por ejemplo, para noviembre de 2024, se predice que la tasa será de aproximadamente 10.03%; los valores aumentan ligeramente hacia principios de 2025, lo que podría indicar una tendencia al alza.</p></li>
 <li><p>Los intervalos de confianza <strong>(yhat_lower y yhat_upper)</strong>, indican la incertidumbre asociada a cada predicción.
@@ -940,7 +940,7 @@ Se observan picos y valles a lo largo del año, lo que sugiere que el fenómeno 
 ##  3rd Qu.:2017-10-16   3rd Qu.: 7.938   3rd Qu.: 7.945   3rd Qu.: 8.001  
 ##  Max.   :2024-09-01   Max.   :26.000   Max.   :25.660   Max.   :23.876</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-67-1.png" width="672" />
-# <strong>CONCLUSIONES FINALES</strong></p>
+# <strong>Conclusiones Finales</strong></p>
 <p>La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.</p>
 <p>Con el propósito de entender mejor el comportamiento histórico de la serie y de probar la capacidad predictiva de diversos modelos, se llevó a cabo un análisis exploratorio y se elaboraron los siguientes modelos proyectivos:</p>
 <ul>
