@@ -1,34 +1,134 @@
-# Cross-references {#cross}
+# **Conclusiones Finales**
 
-Cross-references make it easier for your readers to find and link to elements in your book.
+La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.
 
-## Chapters and sub-chapters
+Con el propósito de entender mejor el comportamiento histórico de la serie y de probar la capacidad predictiva de diversos modelos, se llevó a cabo un análisis exploratorio y se elaboraron los siguientes modelos proyectivos:
 
-There are two steps to cross-reference any heading:
+* ARIMA (AutoRegressive Integrated Moving Average)
+* Holt-Winters (Descomposición de estacionalidad y suavizamiento exponencial)
+* Prophet (Modelo ajustable de tendencia y estacionalidad desarrollado por Meta)
+* Redes Neuronales (Elman y Jordan)
 
-1. Label the heading: `# Hello world {#nice-label}`. 
-    - Leave the label off if you like the automated heading generated based on your heading title: for example, `# Hello world` = `# Hello world {#hello-world}`.
-    - To label an un-numbered heading, use: `# Hello world {-#nice-label}` or `{# Hello world .unnumbered}`.
+El análisis se basó en datos mensuales desde 1999 hasta 2024, abarcando un periodo extenso que incluye diversas dinámicas económicas y cambios estructurales en el país.
 
-1. Next, reference the labeled heading anywhere in the text using `\@ref(nice-label)`; for example, please see Chapter \@ref(cross). 
-    - If you prefer text as the link instead of a numbered reference use: [any text you want can go here](#cross).
 
-## Captioned figures and tables
 
-Figures and tables *with captions* can also be cross-referenced from elsewhere in your book using `\@ref(fig:chunk-label)` and `\@ref(tab:chunk-label)`, respectively.
+**Comparación Global de Modelos**
 
-See Figure \@ref(fig:nice-fig).
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center', fig.alt='Plot with connected points showing that vapor pressure of mercury increases exponentially as temperature increases.'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
-```
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
-Don't miss Table \@ref(tab:nice-tab).
+pronostico_hw = pred
+pronostico_arima = tabla_pronostico_ARIMA_original
+pronostico_pp = forecast
+pronostico_elm = data_futuro_desnormalizado
+pronostico_jrd = data_futuro_jordan
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(pressure, 10), caption = 'Here is a nice table!',
-  booktabs = TRUE
+
+
+if (is.matrix(pronostico_hw)) {
+  pronostico_hw <- as.data.frame(pronostico_hw)
+}
+
+fechas_hw <- seq(from = as.Date("2024-11-01"), by = "month", length.out = nrow(pronostico_hw))
+
+pronostico_hw <- data.frame(
+  Fecha = fechas_hw,          # Columna de fechas
+  Pronostico_hw = pronostico_hw[, "fit"]  # Valores ajustados desde la columna "fit"
 )
+
+
+  
+# Verificar si pronostico_pp es un dataframe
+if (is.data.frame(pronostico_pp)) {
+  # Extraer las fechas
+  fechas_pp <- pronostico_pp$ds
+  
+  # Crear el data.frame con las columnas necesarias
+  pronostico_pp <- data.frame(
+    Fecha = fechas_pp,               # Columna de fechas
+    Pronostico_pp = pronostico_pp$trend # Columna de pronóstico, que es el valor de la tendencia
+  )
+  
+}
+
+# print(pronostico_hw)
+# print(pronostico_arima)
+# print(pronostico_pp)
+# print(pronostico_elm)
+# print(pronostico_jrd)
+
+
+pronostico_pp$Fecha <- as.Date(pronostico_pp$Fecha)
+pronostico_hw$Fecha <- as.Date(pronostico_hw$Fecha)
+pronostico_arima$Fecha <- as.Date(pronostico_arima$Fecha)
+pronostico_elm$Fecha <- as.Date(pronostico_elm$Fecha)
+pronostico_jrd$Fecha <- as.Date(pronostico_jrd$Fecha)
+
+# Crear la tabla comparativa uniendo todas las predicciones
+tabla_comparativa <- pronostico_hw %>%
+  rename(Pronostico_hw = Pronostico_hw) %>%  # Ya está correcto, no es necesario cambiar
+  full_join(pronostico_arima %>% rename(Pronostico_arima = Pronostico), by = "Fecha") %>%
+  full_join(pronostico_pp %>% rename(Pronostico_pp = Pronostico_pp), by = "Fecha") %>%
+  full_join(pronostico_elm %>% rename(Predicciones_Elman = Predicciones_Elman), by = "Fecha") %>%
+  full_join(pronostico_jrd %>% rename(Predicciones_Jordan = Predicciones_Jordan), by = "Fecha")
+
+# Crear la columna 'Valor real' con los valores para los periodos de noviembre y diciembre de 2024
+valor_real <- rep(NA, nrow(tabla_comparativa))  # Inicializar la columna con NA
+
+# Asignar el valor 9.75 a las filas correspondientes a noviembre y diciembre de 2024
+valor_real[tabla_comparativa$Fecha == "2024-11-01"] <- 9.75
+valor_real[tabla_comparativa$Fecha == "2024-12-01"] <- 9.75
+
+# Añadir la columna 'Valor real' al inicio de la tabla comparativa
+tabla_comparativa <- tabla_comparativa %>%
+  mutate(Valor_real = valor_real) %>%
+  select(Fecha, Valor_real, everything())  # Reorganizar para poner 'Valor_real' al inicio
+
+
+
+print(tabla_comparativa)
+
+
+
 ```
+
+
+```{r echo=FALSE, warning=FALSE}
+
+library(knitr)
+
+# Mostrar la tabla con kable
+kable(tabla_comparativa, format = "markdown", caption = "Tabla Comparativa de Pronósticos")
+
+
+```
+
+
+La variabilidad entre los modelos es notable. Mientras que Holt-Winters, ARIMA y Prophet sugieren un crecimiento, Elman y Jordan sugieren una disminución, lo que podría reflejar diferencias en los métodos y tipos de datos que cada uno de estos modelos utiliza. Esto sugiere que hay divergencias significativas en la naturaleza de los datos que estos modelos están capturando.
+
+En cuanto al ajuste, dado que se espera que la tasa se estabilice o disminuya (y esto se puede evidenciar en el comportamiento de noviembre y diciembre), los modelos Elman y Jordan podrían estar capturando la tendencia de manera más precisa.
+
+Se evidencia también que Prophet es el modelo más preciso en cuanto a la cercanía de sus predicciones respecto a los valores reales, esto sugiere que tiene un buen ajuste con los patrones de los datos actuales. Esto no significa necesariamente que siempre será el más preciso, pero en este caso parece estar capturando mejor las dinámicas subyacentes. Sin embargo, para asegurarse de su validez futura, es recomendable continuar evaluando su desempeño y ajustarlo si es necesario.
+
+
+En definitiva, el análisis realizado sobre la tasa de intervención del Banco de la República de Colombia ha demostrado que los diferentes modelos aplicados (ARIMA, Holt-Winters, Prophet y Redes Neuronales) tienen capacidades complementarias para capturar las dinámicas de esta serie temporal, cada uno con fortalezas específicas.
+
+De manera general, las Redes Neuronales, en especial la Red Elman, destacan por su habilidad para modelar relaciones complejas y no lineales en la serie. No obstante, modelos como Prophet son opciones igualmente válidas debido a su flexibilidad para incorporar eventos atípicos y su facilidad de configuración. 
+
+Tanto para los modelos estadísticos como para las redes neuronales, es crucial realizar una búsqueda sistemática de hiperparámetros para garantizar un ajuste óptimo, por ejemplo, en las Redes Neuronales, ajustar el número de neuronas en la capa oculta, variar la tasa de aprendizaje y los coeficientes de regularización. En el caso de Prophet, optimizar la configuración de estacionalidad y ajustar la sensibilidad a eventos atípicos o discontinuidades en la serie.
+
+También podría considerarse mejorar la capacidad predictiva mediante la incorporación de factores económicos adicionales como:
+
+* Inflación (IPC).
+* Tasas de cambio (peso frente al dólar).
+* Precios del petróleo, dado su impacto en la economía colombiana.
+* Indicadores internacionales como tasas de interés de la Reserva Federal (FED).
+
+
+También es pertinente realizar validaciones cruzadas para garantizar que los modelos no estén sobreajustados a datos históricos específicos.
+
+Finalmente, cualquiera sea la mejora que se pruebe, sin duda concluimos que en esta serie que tiene una alta volatilidad y susceptibilidad a variables del entorno, es importante simplificar la Serie Temporal, limitando el horizonte de datos a un periodo más reciente (por ejemplo, últimos 5 años) para enfocar el análisis en las condiciones económicas actuales y reducir la sensibilidad a ruidos históricos o dinámicas económicas que ya no son relevantes.
+
+
+
