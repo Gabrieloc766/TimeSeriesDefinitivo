@@ -1709,7 +1709,9 @@ ggplot(results, aes(x = Fecha)) +
 
 
 ```
-# **Conclusiones Finales**
+
+
+# **Conclusiones**
 
 La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.
 
@@ -1728,6 +1730,15 @@ El análisis se basó en datos mensuales desde 1999 hasta 2024, abarcando un per
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+# Instalar dplyr
+#install.packages("dplyr")
+
+# O instalar todo el tidyverse
+#install.packages("tidyverse")
+
+library(dplyr)
+library(tidyverse)
 
 pronostico_hw = pred
 pronostico_arima = tabla_pronostico_ARIMA_original
@@ -1839,7 +1850,7 @@ También podría considerarse mejorar la capacidad predictiva mediante la incorp
 
 También es pertinente realizar validaciones cruzadas para garantizar que los modelos no estén sobreajustados a datos históricos específicos.
 
-Finalmente, cualquiera sea la mejora que se pruebe, sin duda concluimos que en esta serie que tiene una alta volatilidad y susceptibilidad a variables del entorno, es importante simplificar la Serie Temporal, limitando el horizonte de datos a un periodo más reciente (por ejemplo, últimos 5 años) para enfocar el análisis en las condiciones económicas actuales y reducir la sensibilidad a ruidos históricos o dinámicas económicas que ya no son relevantes.
+Finalmente, cualquiera sea la mejora que se pruebe, sin duda concluimos que en esta serie que tiene una alta volatilidad y susceptibilidad a variables del entorno, es importante simplificar la Serie Temporal, limitando el horizonte de datos a un periodo más reciente con el fin de enfocar el análisis en las condiciones económicas actuales y reducir la sensibilidad a ruidos históricos o dinámicas económicas que ya no son relevantes.
 
 
 

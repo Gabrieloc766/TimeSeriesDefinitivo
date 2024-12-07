@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo: 3 Conclusiones | Analisis Tasa de Intervencion</title>
+  <meta name="description" content="Capítulo: 3 Conclusiones | Analisis Tasa de Intervencion" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo: 3 Conclusiones | Analisis Tasa de Intervencion" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo: 3 Conclusiones | Analisis Tasa de Intervencion" />
+  
+  
+  
+
+<meta name="author" content="Gabriel Orozco/Diana Aguirre/Edgard Camacho" />
+
+
+<meta name="date" content="2024-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="definición-de-modelos.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analisis Tasa de Intervencion</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="enunciado.html"><a href="enunciado.html"><i class="fa fa-check"></i><b>1</b> <strong>Enunciado</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="enunciado.html"><a href="enunciado.html#análisis-exploratorio"><i class="fa fa-check"></i><b>1.1</b> Análisis exploratorio</a></li>
+<li class="chapter" data-level="1.2" data-path="enunciado.html"><a href="enunciado.html#gráficos-de-visualización"><i class="fa fa-check"></i><b>1.2</b> Gráficos de visualización</a></li>
+<li class="chapter" data-level="1.3" data-path="enunciado.html"><a href="enunciado.html#análisis-de-serie-de-tiempo"><i class="fa fa-check"></i><b>1.3</b> Análisis de serie de tiempo</a></li>
+<li class="chapter" data-level="1.4" data-path="enunciado.html"><a href="enunciado.html#promedio-o-media-móvil"><i class="fa fa-check"></i><b>1.4</b> Promedio o media móvil</a></li>
+<li class="chapter" data-level="1.5" data-path="enunciado.html"><a href="enunciado.html#rezago-operador-backshift-y-estacionalidad"><i class="fa fa-check"></i><b>1.5</b> Rezago (operador backshift) y estacionalidad</a></li>
+<li class="chapter" data-level="1.6" data-path="enunciado.html"><a href="enunciado.html#descomposición"><i class="fa fa-check"></i><b>1.6</b> Descomposición</a></li>
+<li class="chapter" data-level="1.7" data-path="enunciado.html"><a href="enunciado.html#estacionariedad"><i class="fa fa-check"></i><b>1.7</b> Estacionariedad</a></li>
+<li class="chapter" data-level="1.8" data-path="enunciado.html"><a href="enunciado.html#diferenciación"><i class="fa fa-check"></i><b>1.8</b> Diferenciación</a></li>
+<li class="chapter" data-level="1.9" data-path="enunciado.html"><a href="enunciado.html#volver-a-verificar-la-estacionariedad-tras-la-diferenciación"><i class="fa fa-check"></i><b>1.9</b> Volver a verificar la Estacionariedad tras la Diferenciación</a></li>
+<li class="chapter" data-level="1.10" data-path="enunciado.html"><a href="enunciado.html#autocorrelación-acf-y-parcial-pacf"><i class="fa fa-check"></i><b>1.10</b> Autocorrelación (ACF) y Parcial (PACF)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html"><i class="fa fa-check"></i><b>2</b> <strong>Definición de Modelos</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-arima"><i class="fa fa-check"></i><b>2.1</b> Modelo Arima</a></li>
+<li class="chapter" data-level="2.2" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#algoritmo-de-holt-winter"><i class="fa fa-check"></i><b>2.2</b> Algoritmo de Holt Winter</a></li>
+<li class="chapter" data-level="2.3" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-holt-winter"><i class="fa fa-check"></i><b>2.3</b> Modelo Holt-Winter</a></li>
+<li class="chapter" data-level="2.4" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#metodología-box-jenkins"><i class="fa fa-check"></i><b>2.4</b> Metodología Box Jenkins</a></li>
+<li class="chapter" data-level="2.5" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-prophet"><i class="fa fa-check"></i><b>2.5</b> Modelo Prophet</a></li>
+<li class="chapter" data-level="2.6" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#redes-neuronales"><i class="fa fa-check"></i><b>2.6</b> Redes Neuronales</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>3</b> <strong>Conclusiones</strong></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analisis Tasa de Intervencion</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="conclusiones" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Capítulo: 3</span> <strong>Conclusiones</strong><a href="conclusiones.html#conclusiones" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.</p>
+<p>Con el propósito de entender mejor el comportamiento histórico de la serie y de probar la capacidad predictiva de diversos modelos, se llevó a cabo un análisis exploratorio y se elaboraron los siguientes modelos proyectivos:</p>
+<ul>
+<li>ARIMA (AutoRegressive Integrated Moving Average)</li>
+<li>Holt-Winters (Descomposición de estacionalidad y suavizamiento exponencial)</li>
+<li>Prophet (Modelo ajustable de tendencia y estacionalidad desarrollado por Meta)</li>
+<li>Redes Neuronales (Elman y Jordan)</li>
+</ul>
+<p>El análisis se basó en datos mensuales desde 1999 hasta 2024, abarcando un periodo extenso que incluye diversas dinámicas económicas y cambios estructurales en el país.</p>
+<p><strong>Comparación Global de Modelos</strong></p>
+<pre><code>##        Fecha Valor_real Pronostico_hw Pronostico_arima Pronostico_pp
+## 1 2024-11-01       9.75      27.62753         27.26119      10.18133
+## 2 2024-12-01       9.75      29.12104         28.53748      10.26376
+## 3 2025-01-01         NA      30.37311         29.80477      10.34894
+## 4 2025-02-01         NA      31.74021         31.07742      10.43412
+## 5 2025-03-01         NA      33.26693         32.34689      10.51106
+## 6 2025-04-01         NA      34.56821         33.61825      10.59624
+##   Predicciones_Elman Predicciones_Jordan
+## 1           25.39873            21.83509
+## 2           25.17496            20.22727
+## 3           24.97697            19.01410
+## 4           24.79870            18.08827
+## 5           24.63530            17.36322
+## 6           24.48405            16.78039</code></pre>
+<table>
+<caption><span id="tab:unnamed-chunk-69">Table 3.1: </span>Tabla Comparativa de Pronósticos</caption>
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="13%" />
+<col width="16%" />
+<col width="13%" />
+<col width="17%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Fecha</th>
+<th align="right">Valor_real</th>
+<th align="right">Pronostico_hw</th>
+<th align="right">Pronostico_arima</th>
+<th align="right">Pronostico_pp</th>
+<th align="right">Predicciones_Elman</th>
+<th align="right">Predicciones_Jordan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2024-11-01</td>
+<td align="right">9.75</td>
+<td align="right">27.62753</td>
+<td align="right">27.26119</td>
+<td align="right">10.18133</td>
+<td align="right">25.39873</td>
+<td align="right">21.83509</td>
+</tr>
+<tr class="even">
+<td align="left">2024-12-01</td>
+<td align="right">9.75</td>
+<td align="right">29.12104</td>
+<td align="right">28.53748</td>
+<td align="right">10.26376</td>
+<td align="right">25.17496</td>
+<td align="right">20.22727</td>
+</tr>
+<tr class="odd">
+<td align="left">2025-01-01</td>
+<td align="right">NA</td>
+<td align="right">30.37311</td>
+<td align="right">29.80477</td>
+<td align="right">10.34894</td>
+<td align="right">24.97697</td>
+<td align="right">19.01410</td>
+</tr>
+<tr class="even">
+<td align="left">2025-02-01</td>
+<td align="right">NA</td>
+<td align="right">31.74021</td>
+<td align="right">31.07742</td>
+<td align="right">10.43412</td>
+<td align="right">24.79870</td>
+<td align="right">18.08827</td>
+</tr>
+<tr class="odd">
+<td align="left">2025-03-01</td>
+<td align="right">NA</td>
+<td align="right">33.26693</td>
+<td align="right">32.34689</td>
+<td align="right">10.51106</td>
+<td align="right">24.63530</td>
+<td align="right">17.36322</td>
+</tr>
+<tr class="even">
+<td align="left">2025-04-01</td>
+<td align="right">NA</td>
+<td align="right">34.56821</td>
+<td align="right">33.61825</td>
+<td align="right">10.59624</td>
+<td align="right">24.48405</td>
+<td align="right">16.78039</td>
+</tr>
+</tbody>
+</table>
+<p>La variabilidad entre los modelos es notable. Mientras que Holt-Winters, ARIMA y Prophet sugieren un crecimiento, Elman y Jordan sugieren una disminución, lo que podría reflejar diferencias en los métodos y tipos de datos que cada uno de estos modelos utiliza. Esto sugiere que hay divergencias significativas en la naturaleza de los datos que estos modelos están capturando.</p>
+<p>En cuanto al ajuste, dado que se espera que la tasa se estabilice o disminuya (y esto se puede evidenciar en el comportamiento de noviembre y diciembre), los modelos Elman y Jordan podrían estar capturando la tendencia de manera más precisa.</p>
+<p>Se evidencia también que Prophet es el modelo más preciso en cuanto a la cercanía de sus predicciones respecto a los valores reales, esto sugiere que tiene un buen ajuste con los patrones de los datos actuales. Esto no significa necesariamente que siempre será el más preciso, pero en este caso parece estar capturando mejor las dinámicas subyacentes. Sin embargo, para asegurarse de su validez futura, es recomendable continuar evaluando su desempeño y ajustarlo si es necesario.</p>
+<p>En definitiva, el análisis realizado sobre la tasa de intervención del Banco de la República de Colombia ha demostrado que los diferentes modelos aplicados (ARIMA, Holt-Winters, Prophet y Redes Neuronales) tienen capacidades complementarias para capturar las dinámicas de esta serie temporal, cada uno con fortalezas específicas.</p>
+<p>De manera general, las Redes Neuronales, en especial la Red Elman, destacan por su habilidad para modelar relaciones complejas y no lineales en la serie. No obstante, modelos como Prophet son opciones igualmente válidas debido a su flexibilidad para incorporar eventos atípicos y su facilidad de configuración.</p>
+<p>Tanto para los modelos estadísticos como para las redes neuronales, es crucial realizar una búsqueda sistemática de hiperparámetros para garantizar un ajuste óptimo, por ejemplo, en las Redes Neuronales, ajustar el número de neuronas en la capa oculta, variar la tasa de aprendizaje y los coeficientes de regularización. En el caso de Prophet, optimizar la configuración de estacionalidad y ajustar la sensibilidad a eventos atípicos o discontinuidades en la serie.</p>
+<p>También podría considerarse mejorar la capacidad predictiva mediante la incorporación de factores económicos adicionales como:</p>
+<ul>
+<li>Inflación (IPC).</li>
+<li>Tasas de cambio (peso frente al dólar).</li>
+<li>Precios del petróleo, dado su impacto en la economía colombiana.</li>
+<li>Indicadores internacionales como tasas de interés de la Reserva Federal (FED).</li>
+</ul>
+<p>También es pertinente realizar validaciones cruzadas para garantizar que los modelos no estén sobreajustados a datos históricos específicos.</p>
+<p>Finalmente, cualquiera sea la mejora que se pruebe, sin duda concluimos que en esta serie que tiene una alta volatilidad y susceptibilidad a variables del entorno, es importante simplificar la Serie Temporal, limitando el horizonte de datos a un periodo más reciente con el fin de enfocar el análisis en las condiciones económicas actuales y reducir la sensibilidad a ruidos históricos o dinámicas económicas que ya no son relevantes.</p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="definición-de-modelos.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="enunciado.html"/>
-
+<link rel="next" href="conclusiones.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -100,6 +100,7 @@
 <li class="chapter" data-level="2.5" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#modelo-prophet"><i class="fa fa-check"></i><b>2.5</b> Modelo Prophet</a></li>
 <li class="chapter" data-level="2.6" data-path="definición-de-modelos.html"><a href="definición-de-modelos.html#redes-neuronales"><i class="fa fa-check"></i><b>2.6</b> Redes Neuronales</a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>3</b> <strong>Conclusiones</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
 
@@ -702,12 +703,12 @@ El PACF muestra un rezago significativo en el primer lag (1), y los rezagos sigu
 <pre><code>## Disabling weekly seasonality. Run prophet with weekly.seasonality=TRUE to override this.</code></pre>
 <pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
 <pre><code>##           ds     yhat yhat_lower yhat_upper
-## 1 2024-11-01 10.02613   7.005051   13.25540
-## 2 2024-12-01 10.08323   6.685198   13.20992
-## 3 2025-01-01 10.22743   7.033813   13.51722
-## 4 2025-02-01 10.30409   6.949942   13.60559
-## 5 2025-03-01 10.71855   7.636292   13.75968
-## 6 2025-04-01 10.50483   7.519301   13.74846</code></pre>
+## 1 2024-11-01 10.02613   6.708435   13.33836
+## 2 2024-12-01 10.08323   6.901971   13.24176
+## 3 2025-01-01 10.22743   6.967707   13.24010
+## 4 2025-02-01 10.30409   7.205069   13.49035
+## 5 2025-03-01 10.71855   7.732701   13.81146
+## 6 2025-04-01 10.50483   7.183654   13.21819</code></pre>
 <ul>
 <li><p>Valores centrales <strong>(yhat)</strong> Son las predicciones para la variable Tasa, desde noviembre de 2024 hasta abril de 2025. Por ejemplo, para noviembre de 2024, se predice que la tasa será de aproximadamente 10.03%; los valores aumentan ligeramente hacia principios de 2025, lo que podría indicar una tendencia al alza.</p></li>
 <li><p>Los intervalos de confianza <strong>(yhat_lower y yhat_upper)</strong>, indican la incertidumbre asociada a cada predicción.
@@ -939,126 +940,7 @@ Se observan picos y valles a lo largo del año, lo que sugiere que el fenómeno 
 ##  Mean   :2011-11-16   Mean   : 6.981   Mean   : 6.985   Mean   : 6.914  
 ##  3rd Qu.:2017-10-16   3rd Qu.: 7.938   3rd Qu.: 7.945   3rd Qu.: 8.001  
 ##  Max.   :2024-09-01   Max.   :26.000   Max.   :25.660   Max.   :23.876</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-67-1.png" width="672" />
-# <strong>Conclusiones Finales</strong></p>
-<p>La Tasa de Intervención del Banco de la República constituye un indicador clave de la política monetaria colombiana, siendo influenciada por decisiones estratégicas para estabilizar la inflación y el valor de la moneda. Su comportamiento combina tendencias, estacionalidad, y fluctuaciones impredecibles asociadas con eventos externos o decisiones abruptas del Banco Central.</p>
-<p>Con el propósito de entender mejor el comportamiento histórico de la serie y de probar la capacidad predictiva de diversos modelos, se llevó a cabo un análisis exploratorio y se elaboraron los siguientes modelos proyectivos:</p>
-<ul>
-<li>ARIMA (AutoRegressive Integrated Moving Average)</li>
-<li>Holt-Winters (Descomposición de estacionalidad y suavizamiento exponencial)</li>
-<li>Prophet (Modelo ajustable de tendencia y estacionalidad desarrollado por Meta)</li>
-<li>Redes Neuronales (Elman y Jordan)</li>
-</ul>
-<p>El análisis se basó en datos mensuales desde 1999 hasta 2024, abarcando un periodo extenso que incluye diversas dinámicas económicas y cambios estructurales en el país.</p>
-<p><strong>Comparación Global de Modelos</strong></p>
-<pre><code>##        Fecha Valor_real Pronostico_hw Pronostico_arima Pronostico_pp
-## 1 2024-11-01       9.75      27.62753         27.26119      10.18133
-## 2 2024-12-01       9.75      29.12104         28.53748      10.26376
-## 3 2025-01-01         NA      30.37311         29.80477      10.34894
-## 4 2025-02-01         NA      31.74021         31.07742      10.43412
-## 5 2025-03-01         NA      33.26693         32.34689      10.51106
-## 6 2025-04-01         NA      34.56821         33.61825      10.59624
-##   Predicciones_Elman Predicciones_Jordan
-## 1           25.39873            21.83509
-## 2           25.17496            20.22727
-## 3           24.97697            19.01410
-## 4           24.79870            18.08827
-## 5           24.63530            17.36322
-## 6           24.48405            16.78039</code></pre>
-<table>
-<caption><span id="tab:unnamed-chunk-69">Table 2.1: </span>Tabla Comparativa de Pronósticos</caption>
-<colgroup>
-<col width="10%" />
-<col width="10%" />
-<col width="13%" />
-<col width="16%" />
-<col width="13%" />
-<col width="17%" />
-<col width="18%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Fecha</th>
-<th align="right">Valor_real</th>
-<th align="right">Pronostico_hw</th>
-<th align="right">Pronostico_arima</th>
-<th align="right">Pronostico_pp</th>
-<th align="right">Predicciones_Elman</th>
-<th align="right">Predicciones_Jordan</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">2024-11-01</td>
-<td align="right">9.75</td>
-<td align="right">27.62753</td>
-<td align="right">27.26119</td>
-<td align="right">10.18133</td>
-<td align="right">25.39873</td>
-<td align="right">21.83509</td>
-</tr>
-<tr class="even">
-<td align="left">2024-12-01</td>
-<td align="right">9.75</td>
-<td align="right">29.12104</td>
-<td align="right">28.53748</td>
-<td align="right">10.26376</td>
-<td align="right">25.17496</td>
-<td align="right">20.22727</td>
-</tr>
-<tr class="odd">
-<td align="left">2025-01-01</td>
-<td align="right">NA</td>
-<td align="right">30.37311</td>
-<td align="right">29.80477</td>
-<td align="right">10.34894</td>
-<td align="right">24.97697</td>
-<td align="right">19.01410</td>
-</tr>
-<tr class="even">
-<td align="left">2025-02-01</td>
-<td align="right">NA</td>
-<td align="right">31.74021</td>
-<td align="right">31.07742</td>
-<td align="right">10.43412</td>
-<td align="right">24.79870</td>
-<td align="right">18.08827</td>
-</tr>
-<tr class="odd">
-<td align="left">2025-03-01</td>
-<td align="right">NA</td>
-<td align="right">33.26693</td>
-<td align="right">32.34689</td>
-<td align="right">10.51106</td>
-<td align="right">24.63530</td>
-<td align="right">17.36322</td>
-</tr>
-<tr class="even">
-<td align="left">2025-04-01</td>
-<td align="right">NA</td>
-<td align="right">34.56821</td>
-<td align="right">33.61825</td>
-<td align="right">10.59624</td>
-<td align="right">24.48405</td>
-<td align="right">16.78039</td>
-</tr>
-</tbody>
-</table>
-<p>La variabilidad entre los modelos es notable. Mientras que Holt-Winters, ARIMA y Prophet sugieren un crecimiento, Elman y Jordan sugieren una disminución, lo que podría reflejar diferencias en los métodos y tipos de datos que cada uno de estos modelos utiliza. Esto sugiere que hay divergencias significativas en la naturaleza de los datos que estos modelos están capturando.</p>
-<p>En cuanto al ajuste, dado que se espera que la tasa se estabilice o disminuya (y esto se puede evidenciar en el comportamiento de noviembre y diciembre), los modelos Elman y Jordan podrían estar capturando la tendencia de manera más precisa.</p>
-<p>Se evidencia también que Prophet es el modelo más preciso en cuanto a la cercanía de sus predicciones respecto a los valores reales, esto sugiere que tiene un buen ajuste con los patrones de los datos actuales. Esto no significa necesariamente que siempre será el más preciso, pero en este caso parece estar capturando mejor las dinámicas subyacentes. Sin embargo, para asegurarse de su validez futura, es recomendable continuar evaluando su desempeño y ajustarlo si es necesario.</p>
-<p>En definitiva, el análisis realizado sobre la tasa de intervención del Banco de la República de Colombia ha demostrado que los diferentes modelos aplicados (ARIMA, Holt-Winters, Prophet y Redes Neuronales) tienen capacidades complementarias para capturar las dinámicas de esta serie temporal, cada uno con fortalezas específicas.</p>
-<p>De manera general, las Redes Neuronales, en especial la Red Elman, destacan por su habilidad para modelar relaciones complejas y no lineales en la serie. No obstante, modelos como Prophet son opciones igualmente válidas debido a su flexibilidad para incorporar eventos atípicos y su facilidad de configuración.</p>
-<p>Tanto para los modelos estadísticos como para las redes neuronales, es crucial realizar una búsqueda sistemática de hiperparámetros para garantizar un ajuste óptimo, por ejemplo, en las Redes Neuronales, ajustar el número de neuronas en la capa oculta, variar la tasa de aprendizaje y los coeficientes de regularización. En el caso de Prophet, optimizar la configuración de estacionalidad y ajustar la sensibilidad a eventos atípicos o discontinuidades en la serie.</p>
-<p>También podría considerarse mejorar la capacidad predictiva mediante la incorporación de factores económicos adicionales como:</p>
-<ul>
-<li>Inflación (IPC).</li>
-<li>Tasas de cambio (peso frente al dólar).</li>
-<li>Precios del petróleo, dado su impacto en la economía colombiana.</li>
-<li>Indicadores internacionales como tasas de interés de la Reserva Federal (FED).</li>
-</ul>
-<p>También es pertinente realizar validaciones cruzadas para garantizar que los modelos no estén sobreajustados a datos históricos específicos.</p>
-<p>Finalmente, cualquiera sea la mejora que se pruebe, sin duda concluimos que en esta serie que tiene una alta volatilidad y susceptibilidad a variables del entorno, es importante simplificar la Serie Temporal, limitando el horizonte de datos a un periodo más reciente (por ejemplo, últimos 5 años) para enfocar el análisis en las condiciones económicas actuales y reducir la sensibilidad a ruidos históricos o dinámicas económicas que ya no son relevantes.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 </div>
 </div>
             </section>
@@ -1066,8 +948,8 @@ Se observan picos y valles a lo largo del año, lo que sugiere que el fenómeno 
           </div>
         </div>
       </div>
-<a href="enunciado.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="enunciado.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusiones.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
